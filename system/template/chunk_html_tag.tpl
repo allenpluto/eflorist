@@ -1,0 +1,1 @@
+<[[*name]][[*attribute]]>[[$chunk_html_tag_closing:condition=`non_void_element`]]

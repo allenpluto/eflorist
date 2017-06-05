@@ -1,0 +1,89 @@
+/*# Header/Top #*/
+/* Base Z-INDEX 1000 - Same as Off Canvas */
+#top_wrapper
+{
+    min-height:5rem;
+    position:relative;
+    padding:0.5rem;
+
+    background:#222222 url(../image/bg_top_wrapper.jpg) top center repeat-x;
+    background:-webkit-linear-gradient(top, #222222, #000000);
+    background:-moz-linear-gradient(top, #222222, #000000);
+    background:-ms-linear-gradient(top, #222222, #000000);
+    background:-o-linear-gradient(top, #222222, #000000);
+    background:linear-gradient(top, #222222, #000000);
+
+    z-index:1000;
+}
+
+#top_wrapper_logo
+{
+    display:block;
+    width:100%;
+    height: 100%;
+    position:absolute;
+    top:0;
+    left:0;
+
+    text-align:center;
+
+    z-index:1010;
+}
+
+#top_wrapper_logo > a
+{
+    display:inline-block;
+    height:100%;
+    padding: 3px;
+}
+
+#top_wrapper_logo img
+{
+    display:block;
+    max-height:100%;
+}
+
+#top_wrapper_off_canvas_trigger
+{
+    display:block;
+    width:4rem;
+    height:4rem;
+    position:relative;
+    float:left;
+
+    border-radius:0.3rem;
+
+    z-index:1020;
+}
+
+#top_wrapper_off_canvas_trigger:hover
+{
+    background-color:rgba(255,255,255,0.1);
+}
+
+#top_wrapper_search_trigger
+{
+    display:block;
+    width:4rem;
+    height:4rem;
+    position:relative;
+    float:right;
+
+    border-radius:0.3rem;
+
+    z-index:1030;
+}
+
+#top_wrapper_search_trigger:before
+{
+    display:inline-block;
+
+    color:#ffffff;
+    font-size:2.4rem;
+    line-height:4rem;
+}
+
+#top_wrapper_search_trigger:hover
+{
+    background-color:rgba(255,255,255,0.1);
+}

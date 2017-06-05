@@ -1,0 +1,132 @@
+/*# Search #*/
+/* Base Z-INDEX 900 */
+.search_trigger
+{
+    text-align:center;
+    cursor:pointer;
+}
+
+.search_trigger:before
+{
+    font-family:'FontAwesome';
+
+    content:'\f002';
+}
+
+#search_wrapper
+{
+    display:block;
+    position:absolute;
+    top:5rem;
+    left:0;
+
+    background:#000000;
+    -webkit-transition:-webkit-transform 500ms ease;
+    -moz-transition:-moz-transform 500ms ease;
+    -ms-transition:-ms-transform 500ms ease;
+    -o-transition:-o-transform 500ms ease;
+    transition:transform 500ms ease;
+
+    -ms-transform: translate(0, -100%);
+    -webkit-transform: translate3d(0, -100%, 0);
+    -moz-transform: translate3d(0, -100%, 0);
+    -ms-transform: translate3d(0, -100%, 0);
+    -o-transform: translate3d(0, -100%, 0);
+    transform: translate3d(0, -100%, 0);
+
+    -webkit-backface-visibility:hidden;
+
+    z-index: 950;
+}
+
+#search_wrapper.search_expand
+{
+    -ms-transform: translate(0, 0);
+    -webkit-transform: translate3d(0, 0, 0);
+    -moz-transform: translate3d(0, 0, 0);
+    -ms-transform: translate3d(0, 0, 0);
+    -o-transform: translate3d(0, 0, 0);
+    transform: translate3d(0, 0, 0);
+}
+
+#search_container
+{
+    display:block;
+    padding:6rem 0;
+    position:relative;
+}
+
+#search_container .search_form_row
+{
+    display:block;
+    width:24rem;
+    max-width:80%;
+    clear:both;
+    padding:1rem 0;
+    margin:0 auto;
+
+    font-size:1.4em;
+}
+
+#search_submit_container.search_form_row
+{
+    padding-top:2.5rem;
+}
+
+#search_container .search_form_row label
+{
+    display:block;
+    width:100%;
+    padding:0.5em 0;
+
+    border:0.2rem solid transparent;
+
+    color:#ffffff;
+    line-height:1.2;
+}
+
+#search_container .search_form_row input[type="text"]
+{
+    display:block;
+    width:100%;
+}
+
+#search_submit
+{
+    display:block;
+    width:100%;
+}
+
+#search_submit span:before
+{
+    padding:0 0.5em 0 0;
+
+    font-family:'FontAwesome';
+
+    content:'\f002';
+}
+
+#search_wrapper_close
+{
+    display:block;
+    width:3rem;
+    height:3rem;
+    position:absolute;
+    top:1rem;
+    left:0;
+
+    text-align:center;
+    cursor:pointer;
+}
+
+#search_wrapper_close:before
+{
+    display:inline-block;
+
+    color:#ffffff;
+    font-family:'FontAwesome';
+    font-size:2.4rem;
+    line-height:3rem;
+
+    content:'\f00d';
+}
