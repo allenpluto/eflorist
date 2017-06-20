@@ -244,7 +244,7 @@ class content extends base {
                 break;
             case 'data':
             default:
-                $control_panel = ['members','sitemgr'];
+                $control_panel = ['manager'];
                 if (in_array($request_path_part,$control_panel))
                 {
                     $this->request['control_panel'] = $request_path_part;
@@ -256,7 +256,7 @@ class content extends base {
                 }
 
                 //$request_path_part = array_shift($request_path);
-                $module = ['profile','listing','business','business-amp','gallery'];
+                $module = ['product'];
                 if (in_array($request_path_part,$module))
                 {
                     $this->request['module'] = $request_path_part;
@@ -1699,13 +1699,7 @@ class content extends base {
                                     {
                                         $this->content['field']['complementary'] = base64_encode(json_encode(['remote_addr'=>get_remote_ip(), 'http_user_agent'=>$_SERVER['HTTP_USER_AGENT'], 'submission_id'=>sha1(openssl_random_pseudo_bytes(5))]));
                                     }
-                                    if ($this->request['document'] == '')
-                                    {
-                                        $index_organization_obj = new index_organization();
-                                        $this->content['field']['featured_business'] = $index_organization_obj->filter_by_featured();
-//print_r($this->content['field']);
-                                        //,array('page_size'=>4,'order'=>'RAND()')
-                                    }
+
                                 }
 
                         }
@@ -2041,8 +2035,11 @@ class content extends base {
                                 'non_void_element'=>false
                             ];
                             $attribute['rel'] = 'stylesheet';
-                            if (!empty($option['name'])) $attribute['href'] = URI_CSS.$option['name'].$file_extension;
-                            else $attribute['href'] = URI_CSS.$name.$file_extension;
+                            // TODO: during development, use content css directly
+//                            if (!empty($option['name'])) $attribute['href'] = URI_CSS.$option['name'].$file_extension;
+//                            else $attribute['href'] = URI_CSS.$name.$file_extension;
+                            if (!empty($option['name'])) $attribute['href'] = URI_CONTENT_CSS.$option['name'].$file_extension;
+                            else $attribute['href'] = URI_CONTENT_CSS.$name.$file_extension;
                         }
                         else
                         {
