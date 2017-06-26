@@ -1,0 +1,1 @@
+<div class="slider_container">[[*_placeholder]]</div>

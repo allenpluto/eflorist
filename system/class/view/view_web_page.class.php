@@ -41,16 +41,24 @@ class view_web_page extends view
         {
             return false;
         }
-        foreach ($this->row as $row_index=>$row_value)
+        foreach ($this->row as $row_index=>&$row_value)
         {
-            $this->row[$row_index]['base'] = URI_SITE_BASE;
+            $row_value['base'] = URI_SITE_BASE;
             if ($GLOBALS['global_preference']->environment != 'production')
             {
-                $this->row[$row_index]['robots'] = 'noindex, nofollow';
+                $row_value['robots'] = 'noindex, nofollow';
             }
             else
             {
-                if (!isset($this->row[$row_index]['robots'])) $this->row[$row_index]['robots'] = 'index, follow';
+                if (!isset($row_value['robots'])) $row_value['robots'] = 'index, follow';
+            }
+            if (!empty($row_value['extra_field']))
+            {
+                $extra_field = json_decode($row_value['extra_field'],true);
+                if (is_array($extra_field))
+                {
+                    $row_value = array_merge($row_value,$extra_field);
+                }
             }
         }
         return $this->row;
