@@ -1772,6 +1772,32 @@ function FrameOnload(){
     });
 
     $('.touch_slider_container').touch_slider();
+
+    if ($('#home_slider_image_container').find('.slider_image').length > 0)
+    {
+        if ($('#home_slider_image_container').find('.slider_image_active').length == 0)
+        {
+            $('#home_slider_image_container').find('.slider_image_active:eq(0)').addClass('slider_image_active');
+        }
+        else
+        {
+            if ($('#home_slider_image_container').find('.slider_image_active').length > 1)
+            {
+                $('#home_slider_image_container').find('.slider_image_active:gt(0)').removeClass('slider_image_active');
+            }
+        }
+        setInterval(function(){
+            var current_active_slider = $('#home_slider_image_container').find('.slider_image_active');
+            var current_index = $('#home_slider_image_container').find('.slider_image').index(current_active_slider);
+            var new_index = 0;
+            if (current_index < $('#home_slider_image_container').find('.slider_image').length - 1)
+            {
+                new_index = current_index+1;
+            }
+            $('#home_slider_image_container').find('.slider_image_active').removeClass('slider_image_active');
+            $('#home_slider_image_container').find('.slider_image:eq('+new_index+')').addClass('slider_image_active');
+        },5000);
+    }
 }
 function BodyOnload(){
 }

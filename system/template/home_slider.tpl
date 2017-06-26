@@ -1,3 +1,1 @@
-<div class="slider_image">
-    <img itemprop="image" src="[[*file_uri]]" sizes="(max-width: 479px) 100vw, 50vw" srcset="[[*m_file_uri]] 300w, [[*l_file_uri]] 480w">
-</div>
+<div id="slider_image_[[*id]]" class="slider_image slider_image_active"></div>[[~style:field_name=`home_slider`:field=`{"content":"#slider_image_[[*id]]{background-image:url('[[*m_file_uri]]');}@media only screen and (min-width:480px) and (max-width:767px){#slider_image_[[*id]]{background-image:url('[[*l_file_uri]]');}}@media only screen and (min-width:992px) and (max-width:1199px){#slider_image_[[*id]]{background-image:url('[[*l_file_uri]]');}}"}`]]

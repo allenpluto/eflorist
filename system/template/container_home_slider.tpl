@@ -1,1 +1,1 @@
-<div class="slider_container">[[*_placeholder]]</div>
+<div id="home_slider_image_container" class="slider_image_container">[[*_placeholder]]</div>
