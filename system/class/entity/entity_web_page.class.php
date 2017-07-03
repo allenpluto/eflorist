@@ -19,6 +19,7 @@ class entity_web_page extends entity
             'name' => 'tbl_entity_web_page.name',
             'alternate_name' => 'tbl_entity_web_page.alternate_name',
             'description' => 'tbl_entity_web_page.description',
+            'image' => 'tbl_entity_web_page.image_id',
             'enter_time' => 'tbl_entity_web_page.enter_time',
             'update_time' => 'tbl_entity_web_page.update_time',
             'view_time' => '"'.date('Y-m-d H:i:s').'"',

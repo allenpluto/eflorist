@@ -347,6 +347,7 @@ class view extends base
                 if (!empty($row['extra_field']))
                 {
                     $extra_field = json_decode($row['extra_field'],true);
+                    if (!is_array($extra_field)) {print_r($row['extra_field']);exit;}
                     $row = array_merge($row,$extra_field);
                 }
             }

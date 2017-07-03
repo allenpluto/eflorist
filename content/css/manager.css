@@ -1,3 +1,65 @@
+.members_home_button_container
+{
+    padding: 2em 0;
+}
+
+.general_style_input_button
+{
+    display: block;
+    width: 100%;
+    margin-bottom: 1em;
+
+    font-size: 1.6em;
+}
+@media only screen and (min-width: 768px) {
+    .general_style_input_button_container
+    {
+        text-align: center;
+    }
+    .general_style_input_button
+    {
+        display: inline-block;
+        width: 20em;
+        margin:0 0.5em 1em 0.5em;
+    }
+}
+
+.footer_action_wrapper
+{
+    display:block;
+    width:100%;
+    position:fixed;
+    left:0;
+    bottom:0;
+
+    color: #ffffff;
+    font-size: 1.6em;
+    text-align: center;
+
+    z-index: 500;
+}
+
+.footer_action_button
+{
+    display:inline-block;
+    width: 33.333333333%;
+    padding: 0.5em 0;
+
+    background: rgba(0,0,0,0.6);
+
+    border-left: 1px solid #333333;
+    border-right: 1px solid #999999;
+
+    box-sizing: border-box;
+
+    cursor: pointer;
+}
+
+.footer_action_button:hover
+{
+    background: rgba(0,0,0,0.5);
+}
+
 .form_row_container
 {
     margin-bottom: 0.5em;
@@ -21,10 +83,16 @@
     overflow: hidden;
 }
 
+.form_row_container_error label
+{
+    color: #ee7777;
+}
+
 /*.form_container:hover .form_row_container > label {height: 0;}
 .form_container .form_row_container:hover > label {height: 2em;}*/
 
 .form_row_container input[type="text"],
+.form_row_container input[type="password"],
 .form_row_container select
 {
     width: 100%;
@@ -35,6 +103,20 @@
 
     border:2px solid #cccccc;
     border-radius:3px;
+}
+
+.form_row_container_highlight input[type="text"],
+.form_row_container_highlight input[type="password"],
+.form_row_container_highlight select
+{
+    border-color: #ffb303;
+}
+
+.form_row_container_error input[type="text"],
+.form_row_container_error input[type="password"],
+.form_row_container_error select
+{
+    border-color: #ee7777;
 }
 
 .form_bottom_row_container
@@ -56,6 +138,11 @@
 
     border:2px solid #cccccc;
     border-radius: 3px;
+}
+
+.form_row_container_error .form_image_uploader_trigger
+{
+    border-color: #ee7777;
 }
 
 .form_image_uploader_delete_trigger
@@ -89,6 +176,8 @@
     content: '\f00d';
 }
 
+.form_image_uploader_container_empty .form_image_uploader_delete_trigger {display:none;}
+
 .form_row_street_address_map
 {
     display: none;
@@ -96,12 +185,12 @@
     padding-bottom: 75%;
 }
 
-.form_row_organization_street_address_container_show_map .form_row_street_address_input
+.form_row_street_address_container_show_map .form_row_street_address_input
 {
     display: none;
 }
 
-.form_row_organization_street_address_container_show_map .form_row_street_address_map
+.form_row_street_address_container_show_map .form_row_street_address_map
 {
     display: block;
 }
@@ -143,7 +232,7 @@
 
 }
 
-.form_row_organization_street_address_container_show_map .form_row_street_address_display_container
+.form_row_street_address_container_show_map .form_row_street_address_display_container
 {
     height: 5.2em;
     padding: 0.5em 1em;

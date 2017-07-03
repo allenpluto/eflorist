@@ -269,71 +269,16 @@ class content extends base {
 
                 switch ($this->request['module'])
                 {
-                    case 'listing':
-                        $method = ['search','find','edit','save','gallery','gallery_add','gallery_edit','save_gallery',''];
-                        if (in_array($request_path_part,$method))
+                    case 'product':
+                        if (!empty($request_path_part))
                         {
-                            $this->request['method'] = $request_path_part;
+                            $this->request['category'] = $request_path_part;
                             $request_path_part = array_shift($request_path);
+                            if (!empty($request_path_part))
+                            {
+                                $this->request['product'] = $request_path_part;
+                            }
                         }
-                        else
-                        {
-                            $this->request['method'] = end($method);
-                        }
-
-                        switch ($this->request['method'])
-                        {
-                            case 'search':
-                                $this->request['option'] = array('keyword'=> $request_path_part);
-                                if (count($request_path)>=2)
-                                {
-                                    $option = ['where','screen','sort'];
-                                    $path_max = floor(count($request_path)/2);
-                                    for ($i=0; $i<$path_max; $i++)
-                                    {
-                                        if (!in_array( $request_path[$i*2],$option))
-                                        {
-                                            $this->message->error = __FILE__.'(line '.__LINE__.'): Construction Fail, unknown option ['.$request_path[$i*2].'] for '.$this->request['module'].'/'.$this->request['method'];
-                                            break 2;
-                                        }
-                                        $this->request['option'][$request_path[$i*2]] = $request_path[$i*2+1];
-                                    }
-                                }
-                                break;
-                            case 'find':
-                                $this->request['option'] = array('category'=> $request_path_part);
-                                $location = ['state','region','suburb'];
-                                $option = ['keyword','where','screen','sort'];
-                                foreach($request_path as $request_path_part_index=>$request_path_part)
-                                {
-                                    // If it is not option key
-                                    if (in_array($request_path_part,$option))
-                                    {
-                                        $request_path = array_slice($request_path,$request_path_part_index);
-                                        break;
-                                    }
-                                    $this->request['option'][$location[$request_path_part_index]] = $request_path_part;
-                                }
-                                if (count($request_path)>=2)
-                                {
-                                    $path_max = floor(count($request_path)/2);
-                                    for ($i=0; $i<$path_max; $i++)
-                                    {
-                                        if (!in_array( $request_path[$i*2],$option))
-                                        {
-                                            $this->message->error = __FILE__.'(line '.__LINE__.'): Construction Fail, unknown option ['.$request_path[$i*2].'] for '.$this->request['module'].'/'.$this->request['method'];
-                                            break 2;
-                                        }
-                                        $this->request['option'][$request_path[$i*2]] = $request_path[$i*2+1];
-                                    }
-                                }
-                                break;
-                            default:
-                                //TODO: control panel methods validation, most methods would need $this->request['option']['id']
-                                //$this->request['document'] = $request_path_part;
-                        }
-
-                        break;
                     default:
                         $this->request['document'] = $request_path_part;
                 }
@@ -767,7 +712,7 @@ class content extends base {
 
                 switch($this->request['control_panel'])
                 {
-                    case 'members':
+                    case 'manager':
                         // Any request on members page need login account information, if not found, redirect to login page
                         if (empty($this->content['account']))
                         {
@@ -794,15 +739,41 @@ class content extends base {
                 switch($this->request['module'])
                 {
                     case 'product':
+                        switch($this->request['control_panel'])
+                        {
+                            case 'manager':
+                                if (empty($this->request['category_id']) AND empty($this->request['product_id']))
+                                {
+                                    $entity_category_obj = new entity_category();
+                                    $entity_category_obj->get(['where'=>'display_order >= 0','order'=>'display_order']);
+                                }
+                                break;
+                            default:
+                                if (empty($this->request['category']))
+                                {
+                                    // If category is not set, product root page, display all category
+                                    $view_category_obj = new view_category();
+                                    $view_category_obj->get(['where'=>'display_order >= 0','order'=>'display_order']);
+                                    $view_category_data = $view_category_obj->fetch_value(['page_size'=>8]);
+                                    print_r($view_category_data);exit;
+                                }
+                                $view_category_obj = new view_category($this->request['category']);
+                                if (empty($view_category_obj->id_group))
+                                {
+                                    // If there is no category set
+                                    break;
+                                }
+                        }
+
                         break;
                     default:
                         // Default module, front end static pages, control panel home pages...
                         switch($this->request['control_panel'])
                         {
-                            case 'members':
+                            case 'manager':
                                 // Members home page
-                                $this->content['field']['page_content'] = '<a href="account" class="general_style_input_button general_style_input_button_gray">Edit Profile</a>
-<a href="listing" class="general_style_input_button general_style_input_button_gray">Manage My Businesses</a>';
+                                $this->content['field']['page_content'] = '<a href="" class="general_style_input_button general_style_input_button_gray">Manage Page</a>
+<a href="product" class="general_style_input_button general_style_input_button_gray">Manage Product</a>';
                                 break;
                             default:
                                 // Front end home page and other statistic pages
@@ -935,7 +906,7 @@ class content extends base {
                                                     {
                                                         $this->result['cookie'] = ['session_id'=>['value'=>$session['name'],'time'=>time()+$session_expire]];
                                                         $this->result['status'] = 301;
-                                                        $this->result['header']['Location'] =  URI_SITE_BASE.'members';
+                                                        $this->result['header']['Location'] =  URI_SITE_BASE.'manager';
                                                     }
                                                 }
                                             }
@@ -1288,7 +1259,7 @@ class content extends base {
                 if (!isset($GLOBALS['global_field'])) $GLOBALS['global_field'] = array();
                 switch($this->request['control_panel'])
                 {
-                    case 'members':
+                    case 'manager':
                         switch($this->request['module'])
                         {
                             case 'listing':

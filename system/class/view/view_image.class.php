@@ -27,12 +27,18 @@ class view_image extends view
         $result = parent::fetch_value($parameter);
         if ($result == false) return $result;
         $sync_id_group = array();
-        foreach ($result as $row_index=>$row)
+        $image_width_array = array_keys($this->preference->image['width']);
+
+        foreach ($result as $row_index=>&$row)
         {
             if (!file_exists($row['file_path']))
             {
                 $this->message->warning = 'View Image local source file does not exist '.$row['file_path'];
                 $sync_id_group[] = $row['id'];
+            }
+            foreach ($image_width_array as $image_width_index=>$image_width)
+            {
+                $row[$image_width.'_file_uri'] = URI_IMAGE . $row['friendly_uri'] . '-' . $row['id'] . '.' . $image_width . '.' . $row['file_extension'];
             }
         }
         if (!empty($sync_id_group))

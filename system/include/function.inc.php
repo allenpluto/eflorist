@@ -451,11 +451,15 @@ function render_html($field = array())
                         // Object, fetch value and render for each row
                         if (empty($field_row[$match_result_value['name']]))
                         {
+//print_r($field_row[$match_result_value['name']]);
+//print_r($match_result_value['parameter']['empty_template']);
+//print_r($match_result_value['parameter']['empty_template_name']);
                             if (empty($match_result_value['parameter']['empty_template']) AND empty($match_result_value['parameter']['empty_template_name']))
                             {
                                 $match_result_value['value'] = '';
                                 break;
                             }
+                            $field_row[$match_result_value['name']] = [];
                         }
 
                         if (!isset($match_result_value['parameter']['object']))
@@ -551,12 +555,15 @@ function render_html($field = array())
                         {
                             if (!empty($match_result_value['parameter']['empty_template_name']) OR !empty($match_result_value['parameter']['empty_template']))
                             {
-                                $empty_field_row = [];
+                                $empty_field_row = $field_row;
                                 $empty_field_parameter = [];
-                                if (isset($field_parameter['parent_row'])) $empty_field_row = $field_parameter['parent_row'];
+                                if (isset($field_parameter['parent_row'])) $empty_field_row = array_merge($empty_field_row,$field_parameter['parent_row']);
                                 if (isset($match_result_value['parameter']['parent_row'])) $empty_field_row = array_merge($empty_field_row,$match_result_value['parameter']['parent_row']);
                                 if (!empty($match_result_value['parameter']['empty_template'])) $empty_field_parameter['template'] = $match_result_value['parameter']['empty_template'];
                                 else $empty_field_parameter['template_name'] = $match_result_value['parameter']['empty_template_name'];
+//print_r($field_parameter);
+//print_r(['_value'=>$empty_field_row,'_parameter'=>$empty_field_parameter]);
+
                                 $match_result_value['value'] = render_html(['_value'=>$empty_field_row,'_parameter'=>$empty_field_parameter]);
                                 unset($empty_field_row);
                             }

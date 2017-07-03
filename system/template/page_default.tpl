@@ -8,8 +8,8 @@
         [[$chunk_menu]]
         [[$chunk_header]]
         <div class="wrapper body_wrapper">
-            <div class="container body_container">
-                [[*page_content]]
+            <div id="home_body_container" class="container body_container column_container">
+                [[image:object=`view_image`:template_name=`chunk_page_default_content`:empty_template_name=`chunk_page_default_content_no_image`]]
             </div>
         </div><!-- .body_wrapper -->
     </div>

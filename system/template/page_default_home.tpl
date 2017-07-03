@@ -9,8 +9,8 @@
         [[$chunk_header]]
         <div class="wrapper body_wrapper">
             <div id="home_body_container" class="container body_container column_container">
-                <div class="column column_12 column_m_6 column_l_6 column_xl_4 column_xxl_4">[[home_slide:object=`view_home_slide`:template_name=`home_slider`:container_name=`container_home_slider`]]</div>
-                <div class="column column_12 column_m_6 column_l_6 column_xl_8 column_xxl_8">[[*page_content]]</div>
+                <div class="column column_12 column_m_6 column_l_6 column_xl_4 column_xxl_4">[[home_slide:object=`view_image`:template_name=`home_slider`:container_name=`container_home_slider`]]</div>
+                <div class="column column_12 column_m_6 column_l_6 column_xl_8 column_xxl_8 column_container"><div class="column column_12 column_xl_6 column_xxl_6 page_content_container">[[*page_content]]</div><div class="column column_12 column_xl_6 column_xxl_6">[[*page_content_2]]</div></div>
             </div>
         </div><!-- .body_wrapper -->
     </div>
