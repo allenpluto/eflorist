@@ -18,6 +18,7 @@ class index extends base
 
     function __construct($value = null, $parameter = array())
     {
+        parent::__construct();
         if (!empty($parameter)) $this->set_parameter($parameter);
 
         if ($GLOBALS['db']) $db = $GLOBALS['db'];

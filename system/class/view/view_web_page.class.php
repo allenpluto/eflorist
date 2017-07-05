@@ -43,15 +43,6 @@ class view_web_page extends view
         }
         foreach ($this->row as $row_index=>&$row_value)
         {
-            $row_value['base'] = URI_SITE_BASE;
-            if ($GLOBALS['global_preference']->environment != 'production')
-            {
-                $row_value['robots'] = 'noindex, nofollow';
-            }
-            else
-            {
-                if (!isset($row_value['robots'])) $row_value['robots'] = 'index, follow';
-            }
             if (!empty($row_value['extra_field']))
             {
                 $extra_field = json_decode($row_value['extra_field'],true);

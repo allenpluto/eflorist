@@ -313,6 +313,11 @@ class content extends base {
 //                    $this->request['file_path'] .= $this->request['action'].DIRECTORY_SEPARATOR;
 //                    $this->request['file_uri'] .= $this->request['action'];
 //                }
+                if (!empty($this->request['category']))
+                {
+                    $this->request['file_path'] .= $this->request['category'].DIRECTORY_SEPARATOR;
+                    $this->request['file_uri'] .= $this->request['category'];
+                }
 
                 if (!empty($this->request['document']))
                 {
@@ -709,6 +714,15 @@ class content extends base {
                 $this->content['script'] = ['jquery'=>['source'=>PATH_CONTENT_JS.'jquery-1.11.3.js'],'default'=>[]];
 
                 $this->content['field']['base'] = URI_SITE_BASE;
+                if ($this->preference->environment != 'production')
+                {
+                    $this->content['field']['robots'] = 'noindex, nofollow';
+                }
+                else
+                {
+                    $this->content['field']['robots'] = 'index, follow';
+                }
+
 
                 switch($this->request['control_panel'])
                 {
@@ -754,15 +768,35 @@ class content extends base {
                                     // If category is not set, product root page, display all category
                                     $view_category_obj = new view_category();
                                     $view_category_obj->get(['where'=>'display_order >= 0','order'=>'display_order']);
-                                    $view_category_data = $view_category_obj->fetch_value(['page_size'=>8]);
-                                    print_r($view_category_data);exit;
+                                    $page_obj = new view_web_page('product');
+                                    $page_fetched_value = $page_obj->fetch_value(['page_size'=>1]);
+                                    $page_fetched_value = end($page_fetched_value);
+                                    $page_fetched_value['category'] = array_values($view_category_obj->id_group);
+
+                                    $this->content['field'] = array_merge($this->content['field'],$page_fetched_value);
+                                    $this->content['template_name'] = 'page_product_index';
+//                                    $view_category_data = $view_category_obj->fetch_value(['page_size'=>8]);
                                 }
-                                $view_category_obj = new view_category($this->request['category']);
-                                if (empty($view_category_obj->id_group))
+                                else
                                 {
-                                    // If there is no category set
-                                    break;
+                                    $view_category_obj = new view_category($this->request['category']);
+                                    if (empty($view_category_obj->id_group))
+                                    {
+                                        // If there is category doesn't exist, redirect to product index
+                                        $this->result['status'] = 301;
+                                        $this->result['header']['Location'] =  URI_SITE_BASE.$this->request['module'].'/';
+                                        break;
+                                    }
+                                    $index_product_obj = new index_product();
+                                    $index_product_obj->filter_by_category(['category_id'=>$view_category_obj->id_group]);
+
+                                    $page_fetched_value = $view_category_obj->fetch_value(['page_size'=>1]);
+
+                                    $this->content['field'] = array_merge($this->content['field'],end($page_fetched_value));
+                                    $this->content['field']['product'] = array_values($index_product_obj->id_group);
                                 }
+
+
                         }
 
                         break;

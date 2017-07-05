@@ -1,0 +1,1 @@
+<img src="[[*m_file_uri]]" sizes="(min-width: 480px) and (max-width: 767px) 480px, (min-width: 992px) and (max-width: 1199px) 480px, 300px" srcset="[[*m_file_uri]] 300w, [[*l_file_uri]] 480w">
