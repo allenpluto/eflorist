@@ -1574,9 +1574,9 @@ $.fn.touch_slider = function(user_option){
             slider_container.data('count_total', slider_item.length);
             slider_container.data('count_current', 1);
             var slider_item_first_clone = slider_item.first().clone();
-            slider_item_first_clone.attr('id',slider_item_first_clone.attr('id')+'_clone').appendTo(slider_container);
+            slider_item_first_clone.attr('id',slider_item_first_clone.attr('id')+'_clone').addClass('touch_slider_item_clone').appendTo(slider_container);
             var slider_item_last_clone = slider_item.last().clone();
-            slider_item_last_clone.attr('id',slider_item_last_clone.attr('id')+'_clone').insertBefore(slider_item.first());
+            slider_item_last_clone.attr('id',slider_item_last_clone.attr('id')+'_clone').addClass('touch_slider_item_clone').insertBefore(slider_item.first());
             slider_container.css('text-indent','-100%');
             slider_container.data('touch_start_x',0);
             slider_container.data('touch_offset_x',0);
@@ -1595,6 +1595,8 @@ $.fn.touch_slider = function(user_option){
                 }
                 slider_container.data('count_current', new_count_current);
                 slider_container.css('text-indent',-100*slider_container.data('count_current')+'%');
+                slider_container.find('.touch_slider_item_active').removeClass('touch_slider_item_active');
+                slider_container.find('.touch_slider_item:eq('+slider_container.data('count_current')+')').addClass('touch_slider_item_active');
                 if (slider_container.data('option').display_count === true)
                 {
                     slider_container.find('.touch_slider_image_counter_container').html(slider_container.data('count_current')+' / '+slider_container.data('count_total'));
@@ -1798,6 +1800,10 @@ function FrameOnload(){
             $('#home_slider_image_container').find('.slider_image:eq('+new_index+')').addClass('slider_image_active');
         },5000);
     }
+
+    $('.product_container').click(function(event){
+        $(this).closest('.touch_slider_container').trigger('set_current',[$(this).closest('.product_wrapper').find('.product_container').index($(this))]);
+    });
 }
 function BodyOnload(){
 }

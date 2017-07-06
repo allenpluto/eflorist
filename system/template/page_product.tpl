@@ -8,11 +8,13 @@
         [[$chunk_menu]]
         [[$chunk_header]]
         <div class="wrapper body_wrapper">
-            <div id="home_body_container" class="container body_container column_container">
-                <h1>[[*name]]</h1>
-                <div class="product_wrapper category_wrapper"><!--
+            <div class="container body_container">
+                <div class="product_detail_title"><h1>[[*name]]</h1></div>
+                <div class="product_detail_content">
+                    <div class="product_wrapper touch_slider_container"><!--
                     [[product]]
                 --></div>
+                </div>
             </div>
         </div><!-- .body_wrapper -->
     </div>

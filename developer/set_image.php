@@ -24,6 +24,9 @@ echo '<pre>';
 //$row = [
 //    ['name'=>'B633','source_file'=>'http://efloristwagga.com.au/assets/galleries/54/2015-01-29_006.JPG']
 //];
+$row = [
+    ['name'=>'B344','source_file'=>'http://efloristwagga.com.au/assets/galleries/54/wagga-florist-001c.JPG']
+];
 $entity_image = new entity_image();
 $entity_image->set(['row'=>$row]);
 print_r($entity_image);
