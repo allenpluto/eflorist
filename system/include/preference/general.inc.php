@@ -10,7 +10,7 @@ if (!isset($global_preference)) $global_preference = preference::get_instance();
 // View Page Size (number of rows fetched from db and render)
 $global_preference->view_page_size = 100;
 $global_preference->view_category_page_size = 8;
-$global_preference->view_product_page_size = 8;
+$global_preference->view_product_page_size = 20;
 
 // Data Encode, options: base64, none
 $global_preference->data_encode = 'none';

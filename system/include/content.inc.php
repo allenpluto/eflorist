@@ -788,7 +788,7 @@ class content extends base {
                                         break;
                                     }
                                     $index_product_obj = new index_product();
-                                    $index_product_obj->filter_by_category(['category_id'=>$view_category_obj->id_group]);
+                                    $index_product_obj->filter_by_category(['category_id'=>$view_category_obj->id_group,'where'=>['`active` = 1']]);
 
                                     $page_fetched_value = $view_category_obj->fetch_value(['page_size'=>1]);
 

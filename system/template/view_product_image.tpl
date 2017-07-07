@@ -1,1 +1,1 @@
-<img src="[[*l_file_uri]]">[[~style:field_name=`product_summary_image_[[*product_id]]`:field=`{"content":"#product_summary_image_[[*product_id]]{background-image:url('[[*m_file_uri]]');}"}`]]
+[[~style:field_name=`product_summary_image_[[*product_id]]`:field=`{"content":"#product_summary_image_[[*product_id]]{background-image:url('[[*m_file_uri]]');}#product_image_[[*product_id]]{background-image:url('[[*l_file_uri]]');}@media only screen and (min-width:480px) and (max-width:767px){#product_summary_image_[[*product_id]]{background-image:url('[[*l_file_uri]]');}}"}`]]

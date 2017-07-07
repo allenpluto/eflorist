@@ -1819,12 +1819,12 @@ img {display:block;max-width:100%;}
 .product_image
 {
     display: none;
-}
-
-.product_image img
-{
-    display: block;
     width: 100%;
+    height: 0;
+    padding-bottom: 100%;
+
+    background: center center no-repeat;
+    background-size: contain;
 }
 
 .product_detail_headline
@@ -1998,7 +1998,7 @@ img {display:block;max-width:100%;}
     .product_wrapper
     {
         width: 640px;
-        height: 735px;
+        height: 700px;
     }
 }
 

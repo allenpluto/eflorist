@@ -1804,6 +1804,16 @@ function FrameOnload(){
     $('.product_container').click(function(event){
         $(this).closest('.touch_slider_container').trigger('set_current',[$(this).closest('.product_wrapper').find('.product_container').index($(this))]);
     });
+
+    if ($('.touch_slider_item').length > 0 && $('.touch_slider_item_active').length == 0)
+    {
+        $('.touch_slider_container').trigger('set_current',[1]);
+    }
+
+    $('.product_wrapper').on('set_current',function(event,new_count_current) {
+        //TODO: change uri on active product change
+        var slider_container = $(this);
+    });
 }
 function BodyOnload(){
 }

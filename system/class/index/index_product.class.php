@@ -30,7 +30,7 @@ class index_product extends index
             'where' => 'category_id IN ('.implode(',',array_keys($category_id_group)).')',
         );
 
-        $filter_parameter = array_merge($filter_parameter, $parameter);
+        $filter_parameter = array_merge_recursive($filter_parameter, $parameter);
         if (!isset($filter_parameter['bind_param'])) $filter_parameter['bind_param'] = array();
         $filter_parameter['bind_param'] = array_merge($filter_parameter['bind_param'], $category_id_group);
 

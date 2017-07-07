@@ -17,7 +17,8 @@ class entity_product extends entity
             'enter_time' => 'tbl_entity_product.enter_time',
             'update_time' => 'tbl_entity_product.update_time',
             'price' => 'tbl_entity_product.price',
-            'category_id' => 'tbl_entity_category.id'
+            'category_id' => 'tbl_entity_category.id',
+            'active' => 'tbl_entity_product.active'
         );
 
         $sync_parameter['join'] = array(
@@ -46,7 +47,8 @@ class entity_product extends entity
             'view_time' => '"'.date('Y-m-d H:i:s').'"',
             'category_name' => 'tbl_entity_category.name',
             'price' => 'tbl_entity_product.price',
-            'display_order' => 'tbl_entity_product.display_order'
+            'display_order' => 'tbl_entity_product.display_order',
+            'active' => 'tbl_entity_product.active'
         );
 
         $sync_parameter['join'] = array(
