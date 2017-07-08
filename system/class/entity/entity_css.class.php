@@ -9,9 +9,9 @@ class entity_css extends entity
     {
         include_once(PATH_PREFERENCE.'image'.FILE_EXTENSION_INCLUDE);
 
-        $default_parameter = [
+        $default_parameter = array(
             'store_data'=>true
-        ];
+        );
         $parameter = array_merge($default_parameter, $parameter);
         parent::__construct($value, $parameter);
 

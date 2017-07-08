@@ -89,7 +89,7 @@ class content extends base {
             unset($_POST);
         }
 
-        $option_preset = ['document','file_type','file_extension','file_extra_extension','module','template','action'];
+        $option_preset = array('document','file_type','file_extension','file_extra_extension','module','template','action');
         foreach($option as $key=>$item)
         {
             // Options from GET, POST overwrite ones decoded from uri
@@ -99,7 +99,7 @@ class content extends base {
                 unset($option[$key]);
             }
         }
-        $option_unset = ['asset_redirect','request_uri','rewrite_base','final_request'];
+        $option_unset = array('asset_redirect','request_uri','rewrite_base','final_request');
         foreach($option as $key=>$item)
         {
             // Options from GET, POST overwrite ones decoded from uri
@@ -116,7 +116,7 @@ class content extends base {
         $request_uri = trim(preg_replace('/^[\/]?'.FOLDER_SITE_BASE.'[\/]/','',$value),'/');
         $request_path = explode('/',$request_uri);
 
-        $type = ['css','font','image','js'];
+        $type = array('css','font','image','js');
         $request_path_part = array_shift($request_path);
         if (in_array($request_path_part,$type))
         {
@@ -126,7 +126,7 @@ class content extends base {
         }
         else
         {
-            $type = ['xml','json'];
+            $type = array('xml','json');
             if (in_array($request_path_part,$type))
             {
                 $this->request['source_type'] = 'data';
@@ -169,7 +169,7 @@ class content extends base {
                 $file_part = explode('.',$file_name);
                 $this->request['document'] = array_shift($file_part);
                 if (!empty($file_part)) $this->request['file_extension'] = array_pop($file_part);
-                $this->request['file_extra_extension'] = [];
+                $this->request['file_extra_extension'] = array();
 
                 if (is_array($this->preference->{$this->request['file_type']}))
                 {
@@ -244,7 +244,7 @@ class content extends base {
                 break;
             case 'data':
             default:
-                $control_panel = ['manager'];
+                $control_panel = array('manager');
                 if (in_array($request_path_part,$control_panel))
                 {
                     $this->request['control_panel'] = $request_path_part;
@@ -256,7 +256,7 @@ class content extends base {
                 }
 
                 //$request_path_part = array_shift($request_path);
-                $module = ['product'];
+                $module = array('product');
                 if (in_array($request_path_part,$module))
                 {
                     $this->request['module'] = $request_path_part;
@@ -365,7 +365,7 @@ class content extends base {
         if (!empty($this->request['session_id']))
         {
             $entity_account_session_obj = new entity_account_session();
-            $method_variable = ['status'=>'OK','message'=>'','account_session_id'=>$this->request['session_id'],'remote_ip'=>$this->request['remote_ip']];
+            $method_variable = array('status'=>'OK','message'=>'','account_session_id'=>$this->request['session_id'],'remote_ip'=>$this->request['remote_ip']);
 
             $session = $entity_account_session_obj->validate_account_session_id($method_variable);
             if ($session == false)
@@ -395,16 +395,16 @@ class content extends base {
         if (!empty($this->request['auth_key']))
         {
             $entity_account_key_obj = new entity_account_key();
-            $method_variable = ['account_key'=>$this->request['auth_key'],'remote_ip'=>$this->request['remote_ip']];
+            $method_variable = array('account_key'=>$this->request['auth_key'],'remote_ip'=>$this->request['remote_ip']);
             $auth_id = $entity_account_key_obj->validate_account_key($method_variable);
             if ($auth_id === false)
             {
                 // Error Handling, Account key authentication failed
                 $this->message->notice = 'Building: Account Key Authentication Failed';
-                $this->content['api_result'] = [
+                $this->content['api_result'] = array(
                     'status'=>$method_variable['status'],
                     'message'=>$method_variable['message']
-                ];
+                );
             }
             else
             {
@@ -413,10 +413,10 @@ class content extends base {
                 {
                     // Error Handling, session validation failed, account_key is valid, but cannot read corresponding account
                     $this->message->error = 'Account Key Authentication Succeed, but cannot find related account';
-                    $this->content['account_result'] = [
+                    $this->content['account_result'] = array(
                         'status'=>'REQUEST_DENIED',
                         'message'=>'Cannot get account info, it might be suspended or temporarily inaccessible'
-                    ];
+                    );
                 }
                 else
                 {
@@ -434,10 +434,10 @@ class content extends base {
         switch($this->request['source_type'])
         {
             case 'static_file':
-                $this->content['target_file'] = [
+                $this->content['target_file'] = array(
                     'path'=>$this->request['file_path'],
                     'uri'=>$this->request['file_uri']
-                ];
+                );
 
                 if (file_exists($this->content['target_file']['path']))
                 {
@@ -452,17 +452,17 @@ class content extends base {
 
 //                $file_relative_path = $this->request['file_type'].DIRECTORY_SEPARATOR;
 //                if (!empty($this->request['sub_path'])) $file_relative_path .= implode(DIRECTORY_SEPARATOR,$this->request['sub_path']).DIRECTORY_SEPARATOR;
-//                $this->content['source_file'] = [
+//                $this->content['source_file'] = array(
 //                    'path' => PATH_ASSET.$file_relative_path.$this->request['document'].'.src.'.$this->request['file_extension'],
 //                    'source' => 'local_file'
-//                ];
+//                );
 //                $source_file_relative_path =  $file_relative_path .  $this->request['document'].'.src.'.$this->request['file_extension'];
 //                $file_relative_path .= $this->request['document'].'.'.$this->request['file_extension'];
 
-                $this->content['source_file'] = [
+                $this->content['source_file'] = array(
                     'path' => dirname($this->request['file_path']).DIRECTORY_SEPARATOR.$this->request['document'].'.'.$this->request['file_extension'],
                     'source' => 'local_file'
-                ];
+                );
 
                 if (isset($this->request['option']['source']))
                 {
@@ -710,8 +710,8 @@ class content extends base {
                 $this->content['field'] = array();
 //                $this->content['script'] = array();
 //                $this->content['style'] = array();
-                $this->content['style'] = ['default'=>[]];
-                $this->content['script'] = ['jquery'=>['source'=>PATH_CONTENT_JS.'jquery-1.11.3.js'],'default'=>[]];
+                $this->content['style'] = array('default'=>array());
+                $this->content['script'] = array('jquery'=>array('source'=>PATH_CONTENT_JS.'jquery-1.11.3.js'),'default'=>array());
 
                 $this->content['field']['base'] = URI_SITE_BASE;
                 if ($this->preference->environment != 'production')
@@ -738,7 +738,7 @@ class content extends base {
 
                         if (!empty($this->content['session']))
                         {
-                            $this->result['cookie'] = ['session_id'=>['value'=>$this->content['session']['name'],'time'=>strtotime($this->content['session']['expire_time'])]];
+                            $this->result['cookie'] = array('session_id'=>array('value'=>$this->content['session']['name'],'time'=>strtotime($this->content['session']['expire_time'])));
                         }
 
                         $this->content['field']['robots'] = 'noindex, nofollow';
@@ -759,7 +759,7 @@ class content extends base {
                                 if (empty($this->request['category_id']) AND empty($this->request['product_id']))
                                 {
                                     $entity_category_obj = new entity_category();
-                                    $entity_category_obj->get(['where'=>'display_order >= 0','order'=>'display_order']);
+                                    $entity_category_obj->get(array('where'=>'display_order >= 0','order'=>'display_order'));
                                 }
                                 break;
                             default:
@@ -767,9 +767,9 @@ class content extends base {
                                 {
                                     // If category is not set, product root page, display all category
                                     $view_category_obj = new view_category();
-                                    $view_category_obj->get(['where'=>'display_order >= 0','order'=>'display_order']);
+                                    $view_category_obj->get(array('where'=>'display_order >= 0','order'=>'display_order'));
                                     $page_obj = new view_web_page('product');
-                                    $page_fetched_value = $page_obj->fetch_value(['page_size'=>1]);
+                                    $page_fetched_value = $page_obj->fetch_value(array('page_size'=>1));
                                     $page_fetched_value = end($page_fetched_value);
                                     $page_fetched_value['category'] = array_values($view_category_obj->id_group);
 
@@ -788,9 +788,9 @@ class content extends base {
                                         break;
                                     }
                                     $index_product_obj = new index_product();
-                                    $index_product_obj->filter_by_category(['category_id'=>$view_category_obj->id_group,'where'=>['`active` = 1']]);
+                                    $index_product_obj->filter_by_category(array('category_id'=>$view_category_obj->id_group,'where'=>array('`active` = 1')));
 
-                                    $page_fetched_value = $view_category_obj->fetch_value(['page_size'=>1]);
+                                    $page_fetched_value = $view_category_obj->fetch_value(array('page_size'=>1));
 
                                     $this->content['field'] = array_merge($this->content['field'],end($page_fetched_value));
                                     $this->content['field']['product'] = array_values($index_product_obj->id_group);
@@ -818,13 +818,13 @@ class content extends base {
                                     {
                                         // session_id is set, check if it is already logged in
                                         $entity_account_session_obj = new entity_account_session();
-                                        $method_variable = ['status'=>'OK','message'=>'','account_session_id'=>$this->request['session_id'],'remote_ip'=>$this->request['remote_ip']];
+                                        $method_variable = array('status'=>'OK','message'=>'','account_session_id'=>$this->request['session_id'],'remote_ip'=>$this->request['remote_ip']);
                                         $session = $entity_account_session_obj->validate_account_session_id($method_variable);
 
                                         if ($session === false)
                                         {
                                             // If session_id is not valid, unset it and continue login process
-                                            $this->result['cookie'] = ['session_id'=>['value'=>'','time'=>1]];
+                                            $this->result['cookie'] = array('session_id'=>array('value'=>'','time'=>1));
                                         }
                                         else
                                         {
@@ -834,12 +834,12 @@ class content extends base {
                                                 // Error Handling, session validation succeed, session_id is valid, but cannot read corresponding account
                                                 $this->message->error = 'Session Validation Succeed, but cannot find related account';
                                                 // If session_id is not valid, unset it and continue login process
-                                                $this->result['cookie'] = ['session_id'=>['value'=>'','time'=>1]];
+                                                $this->result['cookie'] = array('session_id'=>array('value'=>'','time'=>1));
                                             }
                                             else
                                             {
                                                 // If session is valid, redirect to console
-                                                $this->result['cookie'] = ['session_id'=>['value'=>$session['name'],'time'=>strtotime($session['expire_time'])]];
+                                                $this->result['cookie'] = array('session_id'=>array('value'=>$session['name'],'time'=>strtotime($session['expire_time'])));
                                                 $this->result['status'] = 301;
                                                 $this->result['header']['Location'] =  URI_SITE_BASE.'members/';
 
@@ -851,14 +851,14 @@ class content extends base {
                                     {
                                         if (isset($this->request['option']['username']))
                                         {
-                                            $this->content['post_result'] = [
+                                            $this->content['post_result'] = array(
                                                 'status'=>'OK',
                                                 'message'=>''
-                                            ];
+                                            );
 
-                                            $login_param = [];
-                                            $session_param = [];
-                                            $login_param_keys = ['username','password','remember_me'];
+                                            $login_param = array();
+                                            $session_param = array();
+                                            $login_param_keys = array('username','password','remember_me');
                                             foreach($this->request['option'] as  $option_key=>&$option_value)
                                             {
                                                 if (in_array($option_key,$login_param_keys))
@@ -873,11 +873,11 @@ class content extends base {
                                                     {
                                                         // Error Handling, complementary info error, complementary is not base64 encoded text
                                                         $this->message->notice = 'Building: Login Failed';
-                                                        $this->content['post_result'] = [
+                                                        $this->content['post_result'] = array(
                                                             'status'=>'REQUEST_DENIED',
                                                             'message'=>'Login Failed, please try again'
-                                                        ];
-                                                        $this->result['cookie'] = ['session_id'=>['value'=>'','time'=>1]];
+                                                        );
+                                                        $this->result['cookie'] = array('session_id'=>array('value'=>'','time'=>1));
                                                     }
                                                     else
                                                     {
@@ -886,11 +886,11 @@ class content extends base {
                                                         {
                                                             // Error Handling, complementary info not in json format
                                                             $this->message->notice = 'Building: Login Failed';
-                                                            $this->content['post_result'] = [
+                                                            $this->content['post_result'] = array(
                                                                 'status'=>'REQUEST_DENIED',
                                                                 'message'=>'Login Failed, please try again'
-                                                            ];
-                                                            $this->result['cookie'] = ['session_id'=>['value'=>'','time'=>1]];
+                                                            );
+                                                            $this->result['cookie'] = array('session_id'=>array('value'=>'','time'=>1));
                                                         }
                                                         else
                                                         {
@@ -909,11 +909,11 @@ class content extends base {
                                                 {
                                                     // Error Handling, login failed
                                                     $this->message->notice = 'Building: Login Failed';
-                                                    $this->content['post_result'] = [
+                                                    $this->content['post_result'] = array(
                                                         'status'=>'REQUEST_DENIED',
                                                         'message'=>'Login Failed, invalid username or password'
-                                                    ];
-                                                    $this->result['cookie'] = ['session_id'=>['value'=>'','time'=>1]];
+                                                    );
+                                                    $this->result['cookie'] = array('session_id'=>array('value'=>'','time'=>1));
                                                 }
                                                 else
                                                 {
@@ -924,21 +924,21 @@ class content extends base {
                                                         $session_expire = $session_expire*30;
                                                     }
                                                     $entity_account_session_obj = new entity_account_session();
-                                                    $session_param = array_merge($session_param, ['account_id'=>$account['id'],'expire_time'=>gmdate('Y-m-d H:i:s',time()+$session_expire)]);
+                                                    $session_param = array_merge($session_param, array('account_id'=>$account['id'],'expire_time'=>gmdate('Y-m-d H:i:s',time()+$session_expire)));
                                                     $session = $entity_account_session_obj->generate_account_session_id($session_param);
 
                                                     if (empty($session))
                                                     {
                                                         // Error Handling, create session id failed
                                                         $this->message->error = 'Building: Fail to create session id';
-                                                        $this->content['post_result'] = [
+                                                        $this->content['post_result'] = array(
                                                             'status'=>'REQUEST_DENIED',
                                                             'message'=>'Login Failed, fail to create new session'
-                                                        ];
+                                                        );
                                                     }
                                                     else
                                                     {
-                                                        $this->result['cookie'] = ['session_id'=>['value'=>$session['name'],'time'=>time()+$session_expire]];
+                                                        $this->result['cookie'] = array('session_id'=>array('value'=>$session['name'],'time'=>time()+$session_expire));
                                                         $this->result['status'] = 301;
                                                         $this->result['header']['Location'] =  URI_SITE_BASE.'manager';
                                                     }
@@ -953,7 +953,7 @@ class content extends base {
 
                                         // Record login event
                                         $entity_account_log_obj = new entity_account_log();
-                                        $log_record = ['name'=>'Login','remote_ip'=>$this->request['remote_ip'],'request_uri'=>$_SERVER['REQUEST_URI']];
+                                        $log_record = array('name'=>'Login','remote_ip'=>$this->request['remote_ip'],'request_uri'=>$_SERVER['REQUEST_URI']);
                                         $log_record = array_merge($log_record,$this->content['post_result']);
                                         if (isset($account['id']))
                                         {
@@ -978,7 +978,7 @@ class content extends base {
                                         // session_id is not set, redirect to login page
                                         return true;
                                     }
-                                    $this->result['cookie'] = ['session_id'=>['value'=>'','time'=>1]];
+                                    $this->result['cookie'] = array('session_id'=>array('value'=>'','time'=>1));
 
                                     $entity_account_session_obj = new entity_account_session();
                                     $get_parameter = array(
@@ -986,24 +986,19 @@ class content extends base {
                                         'where' => array('`name` = :name')
                                     );
                                     $entity_account_session_obj->get($get_parameter);
-                                    /*$method_variable = ['status' => 'OK', 'message' => '', 'account_session_id' => $this->request['session_id']];
-                                    $session = $entity_account_session_obj->validate_account_session_id($method_variable);
-                                    if ($session === false)
-                                    {
-                                        // If session_id is not valid, redirect to login page
-                                        return true;
-                                    }*/
+
                                     if (count($entity_account_session_obj->row) > 0)
                                     {
                                         // Record logout event
                                         $session_record = end($entity_account_session_obj->row);
 
                                         $entity_account_log_obj = new entity_account_log();
-                                        $log_record = ['name'=>'Logout','account_id'=>$session_record['account_id'],'status'=>'OK','message'=>'Session close by user','content'=>$session_record['name'],'remote_ip'=>$this->request['remote_ip'],'request_uri'=>$_SERVER['REQUEST_URI']];
+                                        $log_record = array('name'=>'Logout','account_id'=>$session_record['account_id'],'status'=>'OK','message'=>'Session close by user','content'=>$session_record['name'],'remote_ip'=>$this->request['remote_ip'],'request_uri'=>$_SERVER['REQUEST_URI']);
                                         $entity_account_obj = new entity_account($session_record['account_id']);
                                         if (count($entity_account_obj->row) > 0)
                                         {
-                                            $log_record['description'] = end($entity_account_obj->row)['name'];
+                                            $entity_account_row = end($entity_account_obj->row);
+                                            $log_record['description'] = $entity_account_row['name'];
                                         }
                                         $entity_account_log_obj->set_log($log_record);
                                     }
@@ -1037,7 +1032,7 @@ class content extends base {
                                         // Error Handling, ambiguous reference, multiple page found, database data error
                                         $GLOBALS['global_message']->warning = __FILE__.'(line '.__LINE__.'): Multiple web page resources loaded '.implode(',',$page_obj->id_group);
                                     }
-                                    $page_fetched_value = $page_obj->fetch_value(['page_size'=>1]);
+                                    $page_fetched_value = $page_obj->fetch_value(array('page_size'=>1));
                                     if (empty($page_fetched_value))
                                     {
                                         // Error Handling, fetch record row failed, database data error
@@ -1049,7 +1044,7 @@ class content extends base {
 
                                     if ($this->request['document'] == 'login' OR $this->request['document'] == 'signup' )
                                     {
-                                        $this->content['field']['complementary'] = base64_encode(json_encode(['remote_addr'=>get_remote_ip(), 'http_user_agent'=>$_SERVER['HTTP_USER_AGENT'], 'submission_id'=>sha1(openssl_random_pseudo_bytes(5))]));
+                                        $this->content['field']['complementary'] = base64_encode(json_encode(array('remote_addr'=>get_remote_ip(), 'http_user_agent'=>$_SERVER['HTTP_USER_AGENT'], 'submission_id'=>sha1(openssl_random_pseudo_bytes(5)))));
                                     }
 
                                 }
@@ -1064,7 +1059,7 @@ class content extends base {
                 else
                 {
                     // Looking for default template
-                    $template_name_part = [];
+                    $template_name_part = array();
                     if (!empty($this->request['control_panel'])) $template_name_part[] = $this->request['control_panel'];
                     if (!empty($this->request['module'])) $template_name_part[] = $this->request['module'];
                     else $template_name_part[] = 'default';
@@ -1081,11 +1076,11 @@ class content extends base {
                     {
                         if (file_exists(PATH_CONTENT_CSS.implode('_',$template_name_part).'.css'))
                         {
-                            $default_css = array_merge([implode('_',$template_name_part)=>[]],$default_css);
+                            $default_css = array_merge(array(implode('_',$template_name_part)=>array()),$default_css);
                         }
                         if (file_exists(PATH_CONTENT_JS.implode('_',$template_name_part).'.js'))
                         {
-                            $default_js = array_merge([implode('_',$template_name_part)=>[]],$default_js);
+                            $default_js = array_merge(array(implode('_',$template_name_part)=>array()),$default_js);
                         }
                         if (!isset($this->content['template_name']) AND file_exists(PATH_TEMPLATE.'page_'.implode('_',$template_name_part).FILE_EXTENSION_TEMPLATE))
                         {
@@ -1308,7 +1303,7 @@ class content extends base {
 //                                        }
                                         break;
                                     case '':
-                                        $this->result['content']['html'] = render_html(['_value'=>$this->content['field'],'_parameter'=>['template'=>'[[organization:template_name=`view_members_organization_summary`]]']]);
+                                        $this->result['content']['html'] = render_html(array('_value'=>$this->content['field'],'_parameter'=>array('template'=>'[[organization:template_name=`view_members_organization_summary`]]')));
                                         break;
                                 }
                                 break;
@@ -1321,7 +1316,7 @@ class content extends base {
                                 switch($this->request['method'])
                                 {
                                     case '':
-                                        $this->result['content']['html'] = render_html(['_value'=>$this->content['field'],'_parameter'=>['template'=>'[[category]]']]);
+                                        $this->result['content']['html'] = render_html(array('_value'=>$this->content['field'],'_parameter'=>array('template'=>'[[category]]')));
                                         break;
                                 }
                                 break;
@@ -1364,7 +1359,7 @@ class content extends base {
                 if (!isset($this->content['field'])) $this->content['field'] = array();
                 if (!isset($this->content['template_name'])) $this->content['template_name'] = '';
                 $GLOBALS['global_field'] = array();
-                $this->result['content'] = render_html(['_value'=>$this->content['field'],'_parameter'=>['template_name'=>$this->content['template_name']]]);
+                $this->result['content'] = render_html(array('_value'=>$this->content['field'],'_parameter'=>array('template_name'=>$this->content['template_name'])));
 //echo 'test point 3'."\n";
 //print_r($GLOBALS['global_field']);
                 if (isset($GLOBALS['global_field']['style'])) $this->content['style'] = array_merge($this->content['style'],$GLOBALS['global_field']['style']);
@@ -1373,7 +1368,7 @@ class content extends base {
                 if (!empty($this->content['style']))
                 {
 //print_r($this->content['style']);
-                    $this->content['field']['style'] = ['_value'=>[],'_parameter'=>['template_name'=>'chunk_html_tag']];
+                    $this->content['field']['style'] = array('_value'=>array(),'_parameter'=>array('template_name'=>'chunk_html_tag'));
                     $file_extension = '.css';
                     if ($this->preference->minify_css)
                     {
@@ -1381,15 +1376,15 @@ class content extends base {
                     }
                     foreach($this->content['style'] as $name=>$option)
                     {
-                        $attribute = [
+                        $attribute = array(
                             'type'=>'text/css'
-                        ];
+                        );
                         if (!isset($option['content']))
                         {
-                            $tag = [
+                            $tag = array(
                                 'name'=>'link',
                                 'non_void_element'=>false
-                            ];
+                            );
                             $attribute['rel'] = 'stylesheet';
                             // TODO: during development, use content css directly
 //                            if (!empty($option['name'])) $attribute['href'] = URI_CSS.$option['name'].$file_extension;
@@ -1399,18 +1394,18 @@ class content extends base {
                         }
                         else
                         {
-                            $tag = [
+                            $tag = array(
                                 'name'=>'style',
                                 'non_void_element'=>true,
                                 'content'=>$option['content']
-                            ];
+                            );
                         }
 
                         if (isset($option['attribute']))  $attribute = array_merge($attribute,$option['attribute']);
-                        $attribute_set = [];
+                        $attribute_set = array();
                         foreach($attribute as $attribute_name=>$attribute_value)
                         {
-                            $attribute_set[] = ['name'=>$attribute_name,'value'=>$attribute_value];
+                            $attribute_set[] = array('name'=>$attribute_name,'value'=>$attribute_value);
                         }
                         $tag['attribute'] = $attribute_set;
                         unset($attribute_set);
@@ -1421,7 +1416,7 @@ class content extends base {
                 }
                 if (!empty($this->content['script']))
                 {
-                    $this->content['field']['script'] = ['_value'=>[],'_parameter'=>['template_name'=>'chunk_html_tag']];
+                    $this->content['field']['script'] = array('_value'=>array(),'_parameter'=>array('template_name'=>'chunk_html_tag'));
                     $file_extension = '.js';
                     if ($this->preference->minify_js)
                     {
@@ -1429,14 +1424,14 @@ class content extends base {
                     }
                     foreach($this->content['script'] as $name=>$option)
                     {
-                        $tag = [
+                        $tag = array(
                             'name'=>'script',
                             'non_void_element'=>true
-                        ];
+                        );
                         if (isset($option['content']))  $tag['content'] = $option['content'];
-                        $attribute = [
+                        $attribute = array(
                             'type'=>'text/javascript'
-                        ];
+                        );
                         if (!isset($option['content']))
                         {
                             $attribute['src'] = URI_JS.$name.$file_extension;
@@ -1448,10 +1443,10 @@ class content extends base {
                         }
 
                         if (isset($option['attribute']))  $attribute = array_merge($attribute,$option['attribute']);
-                        $attribute_set = [];
+                        $attribute_set = array();
                         foreach($attribute as $attribute_name=>$attribute_value)
                         {
-                            $attribute_set[] = ['name'=>$attribute_name,'value'=>$attribute_value];
+                            $attribute_set[] = array('name'=>$attribute_name,'value'=>$attribute_value);
                         }
                         $tag['attribute'] = $attribute_set;
                         unset($attribute_set);
@@ -1460,7 +1455,7 @@ class content extends base {
                         unset($tag);
                     }
                 }
-                $this->result['content'] = render_html(['_value'=>$this->content['field'],'_parameter'=>['template'=>$this->result['content']]]);
+                $this->result['content'] = render_html(array('_value'=>$this->content['field'],'_parameter'=>array('template'=>$this->result['content'])));
 
                 $this->result['header']['Last-Modified'] = gmdate('D, d M Y H:i:s').' GMT';
                 $this->result['header']['Content-Length'] = strlen($this->result['content']);

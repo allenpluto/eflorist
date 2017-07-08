@@ -15,18 +15,13 @@
         <div class="off_canvas_menu_item">
             <a href="make-payment"><span>Make Payment</span></a>
         </div>
+        <div class="off_canvas_menu_item">
+            <a href="enquiry"><span>Enquiry</span></a>
+        </div>
     </div><!-- #off_canvas_menu_section_main_menu -->
     <div id="" class="off_canvas_menu_section">
         <div class="off_canvas_menu_item">
             <a href="product/"><span>Product</span></a>
-        </div>
-    </div>
-    <div id="" class="off_canvas_menu_section">
-        <div class="off_canvas_menu_item">
-            <a href="enquiry"><span>Enquiry</span></a>
-        </div>
-        <div class="off_canvas_menu_item">
-            <a href="order-form"><span>Order Form</span></a>
         </div>
     </div>
 </div><!-- #off_canvas_menu -->

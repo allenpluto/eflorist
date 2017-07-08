@@ -115,7 +115,7 @@ class entity extends base
 
             if (!isset($relational_fields[$relational_field_name]['table']))
             {
-                $entity_pair = [str_replace('entity_','',get_class($this)), $relational_field_name];
+                $entity_pair = array(str_replace('entity_','',get_class($this)), $relational_field_name);
                 asort($entity_pair);
                 $relational_fields[$relational_field_name]['table'] = 'tbl_rel_'.implode('_to_',$entity_pair);
             }
@@ -243,7 +243,7 @@ class entity extends base
                     }
                     else
                     {
-                        $relational_field = $this->construct_relational_fields([$relational_field_name]);
+                        $relational_field = $this->construct_relational_fields(array($relational_field_name));
                     }
                 }
             }
@@ -641,11 +641,11 @@ class entity extends base
             $GLOBALS['global_message']->notice = __FILE__.'(line '.__LINE__.'): '.get_class($this).' fetch value from empty array';
             return array();
         }
-        $default_page_parameter = [
+        $default_page_parameter = array(
             'page_number'=>0,
             'page_size'=>1,
             'page_count'=>999
-        ];
+        );
         $parameter = array_merge($default_page_parameter,$this->parameter,$parameter);
         $page_number = intval($parameter['page_number']);
         if ($page_number > $parameter['page_count']-1) $page_number =  $parameter['page_count']-1;
@@ -831,7 +831,7 @@ class entity extends base
                     if (!is_array($value[$relational_field_name])) $new_target_id_values = explode(',',$value[$relational_field_name]);
                     asort($new_target_id_values);
                     $new_target_id_values = array_unique($new_target_id_values);
-                    $new_target_id_group = $this->format->id_group(['value'=>$new_target_id_values,'key_prefix'=>':target_id_']);
+                    $new_target_id_group = $this->format->id_group(array('value'=>$new_target_id_values,'key_prefix'=>':target_id_'));
                     $new_target_id_values = implode(',',$new_target_id_values);
 
                     $relational_table_bind_value = $this->id_group;
@@ -840,13 +840,13 @@ class entity extends base
                     if ($relational_query === false) continue;
                     $relational_result = $relational_query->fetchAll(PDO::FETCH_ASSOC);
 
-                    $current_relation_array = [];
+                    $current_relation_array = array();
                     foreach ($relational_result as $row_index=>$row_value)
                     {
                         $current_relation_array[$row_value['source_id']] = $row_value['current_target_id_values'];
                     }
 
-                    $new_source_id_group  = [];
+                    $new_source_id_group  = array();
                     foreach ($this->id_group as $record_id_index=>$record_id)
                     {
                         if (!isset($current_relation_array[$record_id])) $current_relation_array[$record_id] = '';
@@ -868,7 +868,7 @@ class entity extends base
                     if (!empty($new_target_id_values))
                     {
                         $relational_sql = 'INSERT INTO '.$relational_field['table'].'('.$relational_field['source_id_field'].','.$relational_field['target_id_field'].') VALUES ';
-                        $relational_table_bind_row = [];
+                        $relational_table_bind_row = array();
                         foreach (array_keys($new_source_id_group) as $source_id_bind_index => $source_id_bind)
                         {
                             foreach (array_keys($new_target_id_group) as $target_id_bind_index => $target_id_bind)

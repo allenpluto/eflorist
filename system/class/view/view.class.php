@@ -53,7 +53,7 @@ class view extends base
         if (!$db->db_table_exists($this->parameter['table']))
         {
             $entity_obj = new $this->parameter['entity']();
-            $entity_obj->sync(['sync_type'=>'init_sync']);
+            $entity_obj->sync(array('sync_type'=>'init_sync'));
             unset($entity_obj);
         }
 
@@ -128,7 +128,7 @@ class view extends base
                         $entity_obj = new $this->parameter['entity']();
                         if (!empty($this->id_group))
                         {
-                            $entity_obj->sync(['id_group'=>$this->id_group]);
+                            $entity_obj->sync(array('id_group'=>$this->id_group));
                         }
                         else
                         {
@@ -163,7 +163,7 @@ class view extends base
 //print_r($this->parameter['entity']);
 //print_r($id_group);
 //exit;
-                        $entity_obj->sync(['id_group'=>$id_group]);
+                        $entity_obj->sync(array('id_group'=>$id_group));
                         unset($entity_obj);
                     }
                 }

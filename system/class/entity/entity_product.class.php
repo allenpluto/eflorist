@@ -26,7 +26,7 @@ class entity_product extends entity
         );
 
         $sync_parameter['fulltext_key'] = array(
-            'fulltext_keywords' => ['name','category_name','description']
+            'fulltext_keywords' => array('name','category_name','description')
         );
 
         $sync_parameter = array_merge($sync_parameter, $parameter);

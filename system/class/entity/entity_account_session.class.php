@@ -11,7 +11,7 @@ class entity_account_session extends entity
         $set_count = strlen($crc32b);
         $random_hash = substr(sha1(openssl_random_pseudo_bytes(20)),-$set_count*4);
 
-        $account_session_id_part = [];
+        $account_session_id_part = array();
         for($i=0;$i<$set_count;$i++)
         {
             $sub_hash = substr($random_hash,$i*4,4);
@@ -20,10 +20,10 @@ class entity_account_session extends entity
             $account_session_id_part[] = $sub_hash;
         }
         $account_session_id = implode('-',$account_session_id_part);
-        $set_parameter = [
-            'row'=>[['account_id'=>$parameter['account_id'],'name'=>$account_session_id,'expire_time'=>$parameter['expire_time'],'remote_addr'=>$parameter['remote_addr'],'http_user_agent'=>$parameter['http_user_agent']]],
-            'table_fields'=>['account_id','name','expire_time','remote_addr','http_user_agent']
-        ];
+        $set_parameter = array(
+            'row'=>array(array('account_id'=>$parameter['account_id'],'name'=>$account_session_id,'expire_time'=>$parameter['expire_time'],'remote_addr'=>$parameter['remote_addr'],'http_user_agent'=>$parameter['http_user_agent'])),
+            'table_fields'=>array('account_id','name','expire_time','remote_addr','http_user_agent')
+        );
 //print_r($parameter);
         $this->set($set_parameter);
         if (empty($this->row))
@@ -66,7 +66,7 @@ class entity_account_session extends entity
 
             // Create Log on session timeout
             $entity_account_log_obj = new entity_account_log();
-            $log_record = ['name'=>'Logout','account_id'=>$session['account_id'],'status'=>'OK','message'=>'Session timeout, force close. Request Time ['.gmdate('Y-m-d H:i:s ').strtotime(gmdate('Y-m-d H:i:s ')).'], Session Expired at ['.$session['expire_time'].' '.strtotime($session['expire_time']).']','content'=>$session['name'],'remote_ip'=>$parameter['remote_ip'],'request_uri'=>$_SERVER['REQUEST_URI']];
+            $log_record = array('name'=>'Logout','account_id'=>$session['account_id'],'status'=>'OK','message'=>'Session timeout, force close. Request Time ['.gmdate('Y-m-d H:i:s ').strtotime(gmdate('Y-m-d H:i:s ')).'], Session Expired at ['.$session['expire_time'].' '.strtotime($session['expire_time']).']','content'=>$session['name'],'remote_ip'=>$parameter['remote_ip'],'request_uri'=>$_SERVER['REQUEST_URI']);
             $entity_account_obj = new entity_account($session['account_id']);
             if (count($entity_account_obj->row) > 0)
             {

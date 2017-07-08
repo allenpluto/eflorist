@@ -25,7 +25,7 @@ Sun: 0900 &ndash; 1300</strong></div>
 <div><span style="font-size: 80%;">ABN: 33 160 165 776
 </span></div>
 </div>';
-$encoded = json_encode(['home_slide'=>[1,2,3,4],'page_content_2'=>$source_html]);
+$encoded = json_encode(array('home_slide'=>array(1,2,3,4),'page_content_2'=>$source_html));
 $decoded = json_decode($encoded,true);
 print_r($encoded);
 print_r($decoded);

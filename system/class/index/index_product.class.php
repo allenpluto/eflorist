@@ -17,13 +17,13 @@ class index_product extends index
     {
         if (empty($parameter['category_id']))
         {
-            return [];
+            return array();
         }
         $category_id_group = $this->format->id_group($parameter['category_id']);
         if (empty($category_id_group))
         {
             $this->message->notice = __FILE__.'(line '.__LINE__.'): '.get_class($this).' invalid organization id(s): '.print_r($parameter['category_id'],true);
-            return [];
+            return array();
         }
 
         $filter_parameter = array(

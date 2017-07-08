@@ -97,9 +97,9 @@ function render_html($field = array())
     {
         if (!empty($field_parameter['empty_template']))
         {
-            $sub_field = [];
+            $sub_field = array();
             if (!empty($field_parameter['parent_row'])) $sub_field = $field_parameter['parent_row'];
-            $field_rendered_content = render_html(['_value'=>$sub_field,'_parameter'=>['template'=>$field_parameter['empty_template']]]);
+            $field_rendered_content = render_html(array('_value'=>$sub_field,'_parameter'=>array('template'=>$field_parameter['empty_template'])));
         }
         else
         {
@@ -110,11 +110,11 @@ function render_html($field = array())
     {
         if (!is_array($field))
         {
-            $field = ['_placeholder'=>$field];
+            $field = array('_placeholder'=>$field);
         }
         if (!isset($field[0]))
         {
-            $field = [$field];
+            $field = array($field);
         }
 
         $template_match = array();
@@ -123,7 +123,7 @@ function render_html($field = array())
         {
             if (!is_array($field_row))
             {
-                $field_row = ['_placeholder'=>$field_row];
+                $field_row = array('_placeholder'=>$field_row);
                 $field_row_parameter = $field_parameter;
             }
             else
@@ -154,7 +154,7 @@ function render_html($field = array())
                     }
                     if (!isset($template_match[$field_row_parameter['template_name']]))
                     {
-                        $template_match[$field_row_parameter['template_name']] = ['template'=>$field_row_parameter['template']];
+                        $template_match[$field_row_parameter['template_name']] = array('template'=>$field_row_parameter['template']);
                     }
                 }
                 else
@@ -314,7 +314,7 @@ function render_html($field = array())
                                         $sub_translate_array[$sub_match_result_key] = $match_result[$sub_match_result_key]['raw_code'];
                                     }
                                     $field_value = strtr($field_value,$sub_translate_array);
-                                    $field_value = render_html(['_value'=>$field_row,'_parameter'=>['template'=>$field_value]]);
+                                    $field_value = render_html(array('_value'=>$field_row,'_parameter'=>array('template'=>$field_value)));
                                 }
                             }
                         }
@@ -341,10 +341,10 @@ function render_html($field = array())
                                 }
                                 else
                                 {
-                                    $sub_field = [
-                                        '_value'=>[],
+                                    $sub_field = array(
+                                        '_value'=>array(),
                                         '_parameter'=>$match_result_value['parameter']
-                                    ];
+                                    );
                                     if (!isset($sub_field['_parameter']['parent_row'])) $sub_field['_parameter']['parent_row'] = $field_row;
                                     else $sub_field['_parameter']['parent_row'] = array_merge($field_row,$sub_field['_parameter']['parent_row']);
                                     $match_result_value['value'] = render_html($sub_field);
@@ -356,10 +356,10 @@ function render_html($field = array())
                                 // either array or string may apply to container
                                 if (is_array($field_row[$match_result_value['name']]))
                                 {
-                                    $sub_field = [
+                                    $sub_field = array(
                                         '_value'=>$field_row[$match_result_value['name']],
                                         '_parameter'=>$match_result_value['parameter']
-                                    ];
+                                    );
                                     if (isset($sub_field['_value']['_parameter']))
                                     {
                                         $sub_field['_parameter'] = array_merge_recursive($sub_field['_value']['_parameter'],$sub_field['_parameter']);
@@ -407,10 +407,10 @@ function render_html($field = array())
                                     }
                                     else
                                     {
-                                        $sub_field = [
+                                        $sub_field = array(
                                             '_value'=>$field_row[$match_result_value['name']],
                                             '_parameter'=>$match_result_value['parameter']
-                                        ];
+                                        );
                                         if (!isset($sub_field['_parameter']['parent_row'])) $sub_field['_parameter']['parent_row'] = $field_row;
                                         else $sub_field['_parameter']['parent_row'] = array_merge($field_row,$sub_field['_parameter']['parent_row']);
                                         $match_result_value['value'] = render_html($sub_field);
@@ -429,10 +429,10 @@ function render_html($field = array())
 //                        if (isset($match_result_value['parameter']['parent_row'])) $field_row = array_merge($field_row, $match_result_value['parameter']['parent_row']);
 //                        if ($match_result_value['parameter']['condition']) $match_result_value['value'] = render_html(['_value'=>$field_row,'_parameter'=>['template_name'=>$match_result_value['name']]]);
 //                        else $match_result_value['value'] = render_html(['_value'=>$field_row,'_parameter'=>['template_name'=>$match_result_value['parameter']['alternative_chunk']]]);
-                        $sub_field = [
+                        $sub_field = array(
                             '_value'=>$field_row,
                             '_parameter'=>$match_result_value['parameter']
-                        ];
+                        );
                         $sub_field['_parameter']['template_name'] = $match_result_value['name'];
                         $match_result_value['value'] = render_html($sub_field);
                         break;
@@ -459,7 +459,7 @@ function render_html($field = array())
                                 $match_result_value['value'] = '';
                                 break;
                             }
-                            $field_row[$match_result_value['name']] = [];
+                            $field_row[$match_result_value['name']] = array();
                         }
 
                         if (!isset($match_result_value['parameter']['object']))
@@ -556,7 +556,7 @@ function render_html($field = array())
                             if (!empty($match_result_value['parameter']['empty_template_name']) OR !empty($match_result_value['parameter']['empty_template']))
                             {
                                 $empty_field_row = $field_row;
-                                $empty_field_parameter = [];
+                                $empty_field_parameter = array();
                                 if (isset($field_parameter['parent_row'])) $empty_field_row = array_merge($empty_field_row,$field_parameter['parent_row']);
                                 if (isset($match_result_value['parameter']['parent_row'])) $empty_field_row = array_merge($empty_field_row,$match_result_value['parameter']['parent_row']);
                                 if (!empty($match_result_value['parameter']['empty_template'])) $empty_field_parameter['template'] = $match_result_value['parameter']['empty_template'];
@@ -564,7 +564,7 @@ function render_html($field = array())
 //print_r($field_parameter);
 //print_r(['_value'=>$empty_field_row,'_parameter'=>$empty_field_parameter]);
 
-                                $match_result_value['value'] = render_html(['_value'=>$empty_field_row,'_parameter'=>$empty_field_parameter]);
+                                $match_result_value['value'] = render_html(array('_value'=>$empty_field_row,'_parameter'=>$empty_field_parameter));
                                 unset($empty_field_row);
                             }
                             else
@@ -576,10 +576,10 @@ function render_html($field = array())
                         {
                             //$field_row[$match_result_value['name']]['_parameter'] = array_merge_recursive($match_result_value['parameter'],$field_row[$match_result_value['name']]['_parameter']);
 
-                            $sub_field = [
+                            $sub_field = array(
                                 '_value'=>array_values($result),
                                 '_parameter'=>$match_result_value['parameter']
-                            ];
+                            );
                             if (!isset( $sub_field['_parameter']['parent_row'])) $sub_field['_parameter']['parent_row'] = array();
                             $sub_field['_parameter']['parent_row'] = array_merge($field_row, $sub_field['_parameter']['parent_row']);
                             $match_result_value['value'] = render_html($sub_field);
@@ -665,7 +665,7 @@ function render_html($field = array())
             // self loop, if page still have untranslated template variables (place holder type excepted, [[+example]], as they are not suppose to be translated at all), use same field and template to render again
             if (preg_match('/\[\[[^\+][a-z](.*?)\]\]/', $field_row_rendered_content))
             {
-                $field_row_rendered_content = render_html(['_value'=>$field_row,'_parameter'=>['template'=>$field_row_rendered_content,'debug'=>true]]);
+                $field_row_rendered_content = render_html(array('_value'=>$field_row,'_parameter'=>array('template'=>$field_row_rendered_content,'debug'=>true)));
             }
 
 //            if (!empty($field_row_parameter['container']) AND !empty($field_row_rendered_content))
@@ -893,4 +893,48 @@ function get_remote_ip()
         return $_SERVER['HTTP_X_FORWARDED_FOR'];
     }
     return $_SERVER['REMOTE_ADDR'];
+}
+
+// PHP compatible issue fix
+if (!function_exists('mime_content_type'))
+{
+    function mime_content_type($filename)
+    {
+        $filename_parts = explode('.',$filename);
+        $file_extension = end($filename_parts);
+        $file_mime = '';
+        switch($file_extension)
+        {
+            case 'css':
+                $file_mime = 'text/css';
+                break;
+            case 'gif':
+                $file_mime = 'image/gif';
+                break;
+            case 'jpg':
+                $file_mime = 'image/jpeg';
+                break;
+            case 'js':
+                $file_mime = 'application/javascript';
+                break;
+            case 'json':
+                $file_mime = 'application/json';
+                break;
+            case 'png':
+                $file_mime = 'image/png';
+                break;
+            case 'svg':
+                $file_mime = 'image/svg+xml';
+                break;
+        }
+        return $file_mime;
+    }
+}
+
+if (!function_exists('http_response_code'))
+{
+    function http_response_code($status)
+    {
+        header(':', true, $status);
+    }
 }

@@ -313,13 +313,12 @@ class format
             $GLOBALS['global_message']->error = 'place_id is mandatory for google_place object';
             return false;
         }
-        $result = ['id'=>$value['place_id']];
+        $result = array('id'=>$value['place_id']);
         unset($value['place_id']);
         unset($value['id']);
 
-        //$flatten_fields = ['formatted_address','formatted_phone_number','international_phone_number','name','opening_hours','permanently_closed','photos','place_id','rating','reviews','types','utc_offset','vicinity','website'];
         $place_type = $value['types'][0];
-        $address_component_field = ['subpremise','street_number','route','sublocality','locality','colloquial_area','postal_code','administrative_area_level_2','administrative_area_level_1','country'];
+        $address_component_field = array('subpremise','street_number','route','sublocality','locality','colloquial_area','postal_code','administrative_area_level_2','administrative_area_level_1','country');
         if (!in_array($place_type, $address_component_field))
         {
             // For place type like 'street_address' and 'intersection', use short route name as alias
@@ -327,7 +326,7 @@ class format
         }
         if (isset($value['address_components']))
         {
-            $additional_address_components = [];
+            $additional_address_components = array();
             foreach ($value['address_components'] as $address_component_index=>$address_component)
             {
                 $component_type = $address_component['types'][0];

@@ -12,7 +12,7 @@ echo '<pre>';
 
 
 $entity_product = new entity_product();
-$entity_product->sync(['sync_type'=>'init_sync']);
+$entity_product->sync(array('sync_type'=>'init_sync'));
 
 print_r($entity_product);
 exit;

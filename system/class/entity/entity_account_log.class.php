@@ -7,10 +7,10 @@ class entity_account_log extends entity
 {
     function set_log($parameter = array())
     {
-        $set_parameter = [
-            'row'=>[$parameter],
+        $set_parameter = array(
+            'row'=>array($parameter),
             'table_fields'=>array_keys($parameter)
-        ];
+        );
         $this->set($set_parameter);
         if (empty($this->row))
         {

@@ -44,7 +44,7 @@ class view_image extends view
         if (!empty($sync_id_group))
         {
             $entity_obj = new $this->parameter['entity']();
-            $entity_obj->sync(['id_group'=>$sync_id_group,'sync_type'=>'update_current']);
+            $entity_obj->sync(array('id_group'=>$sync_id_group,'sync_type'=>'update_current'));
             unset($entity_obj);
         }
         return $result;
