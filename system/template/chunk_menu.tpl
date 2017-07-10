@@ -2,7 +2,7 @@
     <div id="off_canvas_trigger_menu" class="off_canvas_trigger off_canvas_trigger_left"></div>
     <div class="off_canvas_menu_section">
         <div class="off_canvas_menu_title">
-            <h1>Southcity Florist & Flowers on Chaston</h1>
+            <h1>Southcity Florist</h1>
         </div>
     </div>
     <div class="off_canvas_menu_section">

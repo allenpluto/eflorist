@@ -1,6 +1,6 @@
 #login
 {
-    background:#796fce url(../image/bg_top4_api_login.jpg) bottom left no-repeat;
+    background:#384a18 url(../../image/bg_login.jpg) bottom left no-repeat;
     background-size: cover;
 }
 
@@ -14,7 +14,7 @@
 {
     #login
     {
-        background-image: url("../image/bg_vertical_top4_api_login.m.max.jpg");
+        background-image: url("../../image/bg_login_vertical.m.jpg");
         background-size: 100% auto;
     }
 }
@@ -23,7 +23,7 @@
 {
     #login
     {
-        background-image: url("../image/bg_vertical_top4_api_login.l.max.jpg");
+        background-image: url("../../image/bg_login_vertical.l.jpg");
         background-size: 100% auto;
     }
 }
@@ -32,7 +32,7 @@
 {
     #login
     {
-        background-image: url("../image/bg_vertical_top4_api_login.xl.max.jpg");
+        background-image: url("../../image/bg_login_vertical.xl.jpg");
         background-size: 100% auto;
     }
 }
@@ -41,7 +41,7 @@
 {
     #login
     {
-        background-image: url("../image/bg_top4_api_login.xxl.max.jpg");
+        background-image: url("../../image/bg_login.xxl.jpg");
     }
 }
 
@@ -63,7 +63,7 @@ input[type="submit"]
     display: inline-block;
     padding: 1em;
 
-    background: #666666 url(/images/top4/bg_button_face_gray.jpg) top center repeat-x;
+    background: #666666 url(../../image/bg_general_style_input_button_gray.jpg) top center repeat-x;
     background: -webkit-linear-gradient(top, #999999, #666666);
     background: -moz-linear-gradient(top, #999999, #666666);
     background: -ms-linear-gradient(top, #999999, #666666);
@@ -102,34 +102,27 @@ input[type="submit"]:active
 
 .body_title_container > *
 {
+    color: #99ee99;
     font-size: 3em;
 }
 
 .body_title_logo
 {
     display: inline-block;
-    width: 4em;
-    height: 2em;
+    width: 6em;
+    height: 2.25em;
     position: relative;
 
     vertical-align: middle;
 }
 
-.body_title_logo > svg
+.body_title_logo > img
 {
     display: block;
     width: 100%;
     height: 100%;
     position: absolute;
 }
-
-.body_title_logo > svg > image
-{
-    display: block;
-    width: 100%;
-    height: 100%;
-}
-
 
 @media only screen and (max-width:479px)
 {
@@ -145,35 +138,6 @@ input[type="submit"]:active
         width: 50%;
         height: 0;
         margin: 0 auto;
-        padding-bottom: 25%;
+        padding-bottom: 18.75%;
     }
-}
-
-
-
-
-/*# Responsive #*/
-/*# Responsive/XXS #*/
-@media only screen and (max-width:319px)
-{
-}
-
-/*# Responsive/XS #*/
-@media only screen and (min-width:320px) and (max-width:479px)
-{
-}
-
-/*# Responsive/S #*/
-@media only screen and (min-width:480px) and (max-width:767px)
-{
-}
-
-/*# Responsive/M #*/
-@media only screen and (min-width:768px) and (max-width:991px)
-{
-}
-
-/*# Responsive/L #*/
-@media only screen and (min-width:992px) and (max-width:1199px)
-{
 }
