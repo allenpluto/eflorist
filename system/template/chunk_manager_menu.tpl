@@ -2,26 +2,27 @@
     <div id="off_canvas_trigger_menu" class="off_canvas_trigger off_canvas_trigger_left"></div>
     <div class="off_canvas_menu_section">
         <div class="off_canvas_menu_title">
-            <h1>Southcity Florist</h1>
+            <h1>eFlorist Manager Panel</h1>
         </div>
     </div>
     <div class="off_canvas_menu_section">
-        <div class="off_canvas_menu_item">
-            <a href=""><span>Home</span></a>
+        <div class="off_canvas_menu_section_title">
+            <h2>Manage Page</h2>
         </div>
+        [[web_page:object=`entity_web_page`:template_name=`chunk_manager_menu_item`]]
         <div class="off_canvas_menu_item">
-            <a href="news-promotion">News & Promotion</a>
-        </div>
-        <div class="off_canvas_menu_item">
-            <a href="make-payment"><span>Make Payment</span></a>
-        </div>
-        <div class="off_canvas_menu_item">
-            <a href="enquiry"><span>Enquiry</span></a>
+            <a href="add_page"><span>Add a New Page</span></a>
         </div>
     </div><!-- #off_canvas_menu_section_main_menu -->
     <div id="" class="off_canvas_menu_section">
+        <div class="off_canvas_menu_section_title">
+            <h2>Manage Product</h2>
+        </div>
         <div class="off_canvas_menu_item">
-            <a href="product/"><span>Product</span></a>
+            <a href="product/list_category"><span>Category</span></a>
+        </div>
+        <div class="off_canvas_menu_item">
+            <a href="product/list_product"><span>Product</span></a>
         </div>
     </div>
 </div><!-- #off_canvas_menu -->

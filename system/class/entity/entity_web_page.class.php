@@ -6,6 +6,13 @@
 // image_id in image_object reference to source image. One source image may have zero to multiple thumbnail (cropped versions) for different scenario. Only source image may save exifData, any thumbnail can be regenerated using source image exifData and 
 class entity_web_page extends entity
 {
+    function fetch_value($parameter = array())
+    {
+        $default_parameter = array(
+            'table_fields'=>array('id','name')
+        );
+    }
+
     function sync($parameter = array())
     {
         $sync_parameter = array();

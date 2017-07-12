@@ -280,7 +280,14 @@ class content extends base {
                             }
                         }
                     default:
-                        $this->request['document'] = $request_path_part;
+                        if ($this->request['control_panel'] == '')
+                        {
+                            $this->request['document'] = $request_path_part;
+                        }
+                        else
+                        {
+                            $this->request['method'] = $request_path_part;
+                        }
                 }
                 if (!isset($this->request['method']))
                 {
@@ -806,8 +813,8 @@ class content extends base {
                         {
                             case 'manager':
                                 // Members home page
-                                $this->content['field']['page_content'] = '<a href="" class="general_style_input_button general_style_input_button_gray">Manage Page</a>
-<a href="product" class="general_style_input_button general_style_input_button_gray">Manage Product</a>';
+                                $this->content['field']['page_content'] = '<a href="manager/list_page" class="general_style_input_button general_style_input_button_gray">Manage Page</a>
+<a href="manager/list_category" class="general_style_input_button general_style_input_button_gray">Manage Product</a>';
                                 break;
                             default:
                                 // Front end home page and other statistic pages
