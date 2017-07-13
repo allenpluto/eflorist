@@ -813,6 +813,15 @@ class content extends base {
                         {
                             case 'manager':
                                 // Members home page
+                                $entity_web_page_obj = new entity_web_page();
+                                $entity_web_page_obj->get(array('fields'=>['id','name'],'where'=>'friendly_uri != "product" AND friendly_uri != "login"'));
+                                $this->content['field']['manage_menu_page'] = array_values($entity_web_page_obj->id_group);
+                                if (!$this->request['option']['id'])
+                                {
+                                    //TODO: Error Handler for edit page without id
+                                }
+                                $entity_web_page_obj = new entity_web_page($this->request['option']['id']);
+                                $this->content['field']['web_page'] = end($entity_web_page_obj->id_group);
                                 $this->content['field']['page_content'] = '<a href="manager/list_page" class="general_style_input_button general_style_input_button_gray">Manage Page</a>
 <a href="manager/list_category" class="general_style_input_button general_style_input_button_gray">Manage Product</a>';
                                 break;

@@ -11,6 +11,8 @@ class entity_web_page extends entity
         $default_parameter = array(
             'table_fields'=>array('id','name')
         );
+        $parameter = array_merge($default_parameter,$parameter);
+        return $this->get($parameter);
     }
 
     function sync($parameter = array())

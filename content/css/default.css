@@ -967,6 +967,14 @@ img {display:block;max-width:100%;}
 
 }
 
+.off_canvas_menu_section_title
+{
+    padding: 1rem;
+
+    color: #000000;
+    font-size: 1.2em;
+}
+
 .off_canvas_menu_item
 {
     font-size:1.4em;

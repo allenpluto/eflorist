@@ -9,10 +9,7 @@
         <div class="off_canvas_menu_section_title">
             <h2>Manage Page</h2>
         </div>
-        [[web_page:object=`entity_web_page`:template_name=`chunk_manager_menu_item`]]
-        <div class="off_canvas_menu_item">
-            <a href="add_page"><span>Add a New Page</span></a>
-        </div>
+        [[manage_menu_page:object=`entity_web_page`:template_name=`chunk_manager_menu_item`]]
     </div><!-- #off_canvas_menu_section_main_menu -->
     <div id="" class="off_canvas_menu_section">
         <div class="off_canvas_menu_section_title">
