@@ -1,28 +1,66 @@
-.members_home_button_container
+.manager_web_page_container
 {
-    padding: 2em 0;
-}
-
-.general_style_input_button
-{
-    display: block;
-    width: 100%;
+    padding: 0.5em;
     margin-bottom: 1em;
 
-    font-size: 1.6em;
+    background: rgba(255,255,255,0.8);
 }
+
+.manager_web_page_title
+{
+    padding: 0.2em 0;
+
+    font-weight: bold;
+}
+
+.manager_web_page_button_container
+{
+    padding: 0.3em 0;
+    text-align: center;
+}
+
+.manager_web_page_button_container > .general_style_input_button
+{
+    display: inline-block;
+    width: 8em;
+    margin: 0 0.5em;
+
+    padding: 0.5em;
+}
+
 @media only screen and (min-width: 768px) {
-    .general_style_input_button_container
+    .manager_web_page_container
     {
-        text-align: center;
+        margin-bottom: 0;
     }
-    .general_style_input_button
+
+    .manager_web_page_container:nth-child(even)
+    {
+        background: rgba(0,0,0,0.1);
+    }
+
+    .manager_web_page_title,
+    .manager_web_page_button_container
     {
         display: inline-block;
-        width: 20em;
-        margin:0 0.5em 1em 0.5em;
+        width: 50%;
+    }
+
+    .manager_web_page_button_container
+    {
+        padding: 0;
+        text-align: right;
+    }
+
+    .manager_web_page_button_container > .general_style_input_button
+    {
+        width: 40%;
+
+        margin: 0;
+        padding: 0.2em;
     }
 }
+
 
 .footer_action_wrapper
 {

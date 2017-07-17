@@ -9,7 +9,7 @@
         [[$chunk_header]]
         <div class="wrapper body_wrapper">
             <div id="home_body_container" class="container body_container column_container">
-                [[image:object=`view_image`:template_name=`chunk_page_default_content`:empty_template_name=`chunk_page_default_content_no_image`]]
+                [[web_page:object=`entity_web_page`:template_name=`view_manager_web_page`]]
             </div>
         </div><!-- .body_wrapper -->
     </div>

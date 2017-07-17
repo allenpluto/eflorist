@@ -1,4 +1,4 @@
-<div class="section_container container form_container">
+<div class="section_container form_container">
     <div class="section_title"><h1>Edit Page - [[*name]]</h1></div>
     <div class="section_content ajax_form_container">
         <form id="form_manager_category" class="ajax_form">
