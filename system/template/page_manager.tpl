@@ -8,7 +8,7 @@
         [[$chunk_manager_menu]]
         [[$chunk_header]]
         <div class="wrapper body_wrapper">
-            <div id="home_body_container" class="container body_container column_container">
+            <div class="container body_container manager_body_container column_container">
                 [[web_page:object=`entity_web_page`:template_name=`view_manager_web_page`]]
             </div>
         </div><!-- .body_wrapper -->

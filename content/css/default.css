@@ -1308,7 +1308,7 @@ img {display:block;max-width:100%;}
 .body_container
 {
     min-height: 600px;
-    padding: 2em 0;
+    padding: 2em 1em;
 
     font-size: 1.4em;
 
@@ -1644,10 +1644,6 @@ img {display:block;max-width:100%;}
 }
 
 /*# Body/Default/Home #*/
-#home_body_container
-{
-    padding: 2em 1em;
-}
 #home_body_container > .column
 {
     padding: 0 1em;

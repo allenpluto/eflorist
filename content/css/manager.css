@@ -1,3 +1,8 @@
+.manager_body_container
+{
+    font-size: 1.2em;
+}
+
 .manager_web_page_container
 {
     padding: 0.5em;
@@ -29,6 +34,11 @@
 }
 
 @media only screen and (min-width: 768px) {
+    .manager_body_container
+    {
+        font-size: 1.2em;
+    }
+
     .manager_web_page_container
     {
         margin-bottom: 0;
@@ -90,12 +100,54 @@
 
     box-sizing: border-box;
 
+    user-drag: none;
+    user-select: none;
+    -moz-user-select: none;
+    -webkit-user-drag: none;
+    -webkit-user-select: none;
+    -ms-user-select: none;
+
     cursor: pointer;
 }
 
 .footer_action_button:hover
 {
     background: rgba(0,0,0,0.5);
+}
+
+@media only screen and (min-width: 768px)
+{
+    .footer_action_wrapper
+    {
+        position:static;
+        left:auto;
+        bottom:auto;
+
+        color: #222222;
+        font-size: 1.2em;
+        font-weight: bold;
+    }
+
+    .footer_action_button
+    {
+        width: 10em;
+        margin: 0 1em;
+
+        background:#bbbbbb;
+
+        border: 2px outset #bbbbbb;
+        border-radius: 3px;
+    }
+
+    .footer_action_button:hover
+    {
+        background:#cccccc;
+    }
+
+    .footer_action_button:active
+    {
+        border-style: inset;
+    }
 }
 
 .form_row_container
@@ -131,7 +183,8 @@
 
 .form_row_container input[type="text"],
 .form_row_container input[type="password"],
-.form_row_container select
+.form_row_container select,
+.form_row_container textarea
 {
     width: 100%;
     padding: 0.5em 1em;
@@ -143,18 +196,61 @@
     border-radius:3px;
 }
 
+.form_row_container textarea
+{
+    min-height: 6em;
+    resize: none;
+}
+
 .form_row_container_highlight input[type="text"],
 .form_row_container_highlight input[type="password"],
-.form_row_container_highlight select
+.form_row_container_highlight select,
+.form_row_container_highlight textarea
 {
     border-color: #ffb303;
 }
 
 .form_row_container_error input[type="text"],
 .form_row_container_error input[type="password"],
-.form_row_container_error select
+.form_row_container_error select,
+.form_row_container_error textarea
 {
     border-color: #ee7777;
+}
+
+#form_members_organization_page_content
+{
+    height: 20em;
+}
+
+@media only screen and (min-width: 768px)
+{
+    .form_row_container
+    {
+        margin-bottom: 1em;
+    }
+
+    .form_row_container > label
+    {
+        display: inline-block;
+        width: 20%;
+        vertical-align: top;
+        padding-top: 0.3em;
+    }
+
+    .form_row_container input[type="text"],
+    .form_row_container input[type="password"],
+    .form_row_container select,
+    .form_row_container textarea
+    {
+        display: inline-block;
+        width: 40%;
+    }
+
+    #form_members_organization_page_content
+    {
+        width: 75%;
+    }
 }
 
 .form_bottom_row_container

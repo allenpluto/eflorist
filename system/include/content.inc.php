@@ -312,7 +312,7 @@ class content extends base {
                 if (!empty($this->request['method']))
                 {
                     $this->request['file_path'] .= $this->request['method'].DIRECTORY_SEPARATOR;
-                    $this->request['file_uri'] .= $this->request['method'].'/';
+                    $this->request['file_uri'] .= $this->request['method'];
                 }
 
 //                if (!empty($this->request['action']))
