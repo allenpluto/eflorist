@@ -19,16 +19,16 @@
                 <input id="form_members_organization_meta_keywords" name="meta_keywords" type="text" placeholder="Meta Keywords" value="[[*meta_keywords]]">
             </div>
             <div class="form_row_container">
-                <label for="form_members_organization_page_title">Page Title</label>
+                <label for="form_members_organization_page_title">Body Title</label>
                 <input id="form_members_organization_page_title" name="page_title" type="text" placeholder="Page Title" value="[[*page_title]]">
             </div>
             <div class="form_row_container">
-                <label for="form_members_organization_page_content">Page Content</label>
+                <label for="form_members_organization_page_content">Body Content</label>
                 <textarea id="form_members_organization_page_content" name="page_content" type="text" placeholder="Page Content">[[*page_content]]</textarea>
             </div>
             <div class="form_bottom_row_container"></div>
             <div class="footer_action_wrapper"><!--
-            --><a href="[[*base]]members/listing/" class="footer_action_button footer_action_button_back">Back</a><!--
+            --><a href="[[*base]]manager/" class="footer_action_button footer_action_button_back">Back</a><!--
             --><a href="javascript:void(0)" class="footer_action_button footer_action_button_reset">Reset</a><!--
             --><a href="javascript:void(0)" class="footer_action_button footer_action_button_save">Save</a><!--
         --></div>

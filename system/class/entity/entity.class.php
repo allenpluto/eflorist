@@ -759,7 +759,7 @@ class entity extends base
         }
         if (empty($this->id_group))
         {
-            $GLOBALS['global_message']->notice = __FILE__.'(line '.__LINE__.'): '.get_class($this).' cannot perform upgrade with empty id_group';
+            $GLOBALS['global_message']->notice = __FILE__.'(line '.__LINE__.'): '.get_class($this).' cannot perform update with empty id_group';
             return array();
         }
         $parameter = array_merge($this->parameter,$parameter);

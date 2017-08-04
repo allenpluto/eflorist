@@ -4,7 +4,7 @@
     <meta name="keywords" content="[[*meta_keywords]]">
     <meta name="description" content="[[*description]]">
     <title>[[*name]]</title>
-    <base href="[[*base]]manager/" >
+    <base href="[[*base]]" >
 
     <link rel="shortcut icon" href="favicon.ico" type="image/x-icon">
 

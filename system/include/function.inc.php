@@ -92,7 +92,12 @@ function render_html($field = array())
     {
         $field = $field['_value'];
     }
-
+//if ($field_parameter['template_name'] == 'view_manager_web_page')
+//{
+//    echo 'test point 1';
+//    print_r($field);
+//    print_r($field_parameter);
+//}
     if (empty($field))
     {
         if (!empty($field_parameter['empty_template']))
@@ -197,22 +202,24 @@ function render_html($field = array())
                     }
                 }
             }
-
+//if ($field_parameter['template_name'] == 'view_manager_web_page')
+//{
+//    echo 'test point 2';
+//    print_r($field_row);
+//}
             if (isset($field_parameter['parent_row']))
             {
                 $field_row = array_merge($field_parameter['parent_row'],$field_row);
-                unset($field_parameter['parent_row']);
+                unset($field_row_parameter['parent_row']);
             }
 
             if (!is_array($global_field)) print_r($global_field);
             if (!is_array($field_row)) print_r($field_row);
             $field_row = array_merge($global_field,$field_row);
-//if ($field_parameter['template_name'] == 'chunk_html_tag_attribute')
+//if ($field_parameter['template_name'] == 'view_manager_web_page')
 //{
-//    unset($field[0]['organization']);
-//    print_r($field);
-//    unset($field_parameter['parent_row']);
-//    print_r($field_parameter);
+//    echo 'test point 3';
+//    print_r($field_row);
 //}
             $match_result = array();
             if (!isset($template_match[$field_row_parameter['template_name']]['match_result']))

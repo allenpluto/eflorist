@@ -748,6 +748,7 @@ class content extends base {
                             $this->result['cookie'] = array('session_id'=>array('value'=>$this->content['session']['name'],'time'=>strtotime($this->content['session']['expire_time'])));
                         }
 
+                        $this->content['field']['control_panel'] = $this->request['control_panel'];
                         $this->content['field']['robots'] = 'noindex, nofollow';
                         $this->content['field']['name'] = ucwords($this->request['control_panel']);
                         if (!empty($this->request['method']))
@@ -826,6 +827,16 @@ class content extends base {
                                         }
                                         $entity_web_page_obj = new entity_web_page($this->request['option']['id']);
                                         $this->content['field']['web_page'] = end($entity_web_page_obj->id_group);
+                                        $image_uploader_data = array(
+                                            'width'=>200,
+                                            'height'=>200,
+                                            'allow_delete'=>true,
+                                            'shrink_large'=>true,
+                                            'default_image'=>'./image/upload_image.jpg'
+                                        );
+                                        $image_uploader_data_string = json_encode($image_uploader_data);
+                                        $this->content['script']['logo_uploader'] = ['content'=>'$(document).ready(function(){$(\'.form_image_uploader_container\').form_image_uploader('.$image_uploader_data_string.');});'];
+
                                         break;
                                     default:
                                         $this->content['field']['web_page'] = $this->content['field']['manage_menu_page'];
