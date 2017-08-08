@@ -270,16 +270,32 @@ class content extends base {
                 switch ($this->request['module'])
                 {
                     case 'product':
-                        if (!empty($request_path_part))
+                        if ($this->request['control_panel'] == '')
                         {
-                            $this->request['category'] = $request_path_part;
-                            $request_path_part = array_shift($request_path);
                             if (!empty($request_path_part))
                             {
-                                $this->request['product'] = $request_path_part;
+                                $this->request['category'] = $request_path_part;
                                 $request_path_part = array_shift($request_path);
+                                if (!empty($request_path_part))
+                                {
+                                    $this->request['product'] = $request_path_part;
+                                    $request_path_part = array_shift($request_path);
+                                }
                             }
                         }
+                        else
+                        {
+                            $method = array('list_category','list_product','edit_category','edit_product');
+                            if (in_array($request_path_part,$method))
+                            {
+                                $this->request['method'] = $request_path_part;
+                            }
+                            else
+                            {
+                                $this->request['method'] = 'list_category';
+                            }
+                        }
+                        break;
                     default:
                         if ($this->request['control_panel'] == '')
                         {
@@ -766,6 +782,12 @@ class content extends base {
                             $this->content['field']['name'] .= ' - '.ucwords($this->request['method']);
                         }
                         $this->content['field']['name'] .= ' - '.$this->content['account']['name'];
+                        // Manager Page Menu
+                        $entity_web_page_obj = new entity_web_page();
+                        $entity_web_page_obj->get(array('fields'=>array('id','name'),'where'=>'1'));
+                        $this->content['field']['manage_menu_page'] = array_values($entity_web_page_obj->id_group);
+
+
                 }
 
                 switch($this->request['module'])
@@ -774,10 +796,12 @@ class content extends base {
                         switch($this->request['control_panel'])
                         {
                             case 'manager':
-                                if (empty($this->request['category_id']) AND empty($this->request['product_id']))
+                                switch($this->request['method'])
                                 {
-                                    $entity_category_obj = new entity_category();
-                                    $entity_category_obj->get(array('where'=>'display_order >= 0','order'=>'display_order'));
+                                    case 'list_category':
+                                        $entity_category_obj = new entity_category();
+                                        $entity_category_obj->get(array('where'=>'display_order >= 0','order'=>'display_order'));
+                                        $this->content['field']['category'] = array_values($entity_category_obj->id_group);
                                 }
                                 break;
                             default:
@@ -823,11 +847,6 @@ class content extends base {
                         switch($this->request['control_panel'])
                         {
                             case 'manager':
-                                // Members home page
-                                $entity_web_page_obj = new entity_web_page();
-                                $entity_web_page_obj->get(array('fields'=>array('id','name'),'where'=>'friendly_uri != "product" AND friendly_uri != "login"'));
-                                $this->content['field']['manage_menu_page'] = array_values($entity_web_page_obj->id_group);
-
                                 switch($this->request['method'])
                                 {
                                     case 'edit_page':
@@ -855,7 +874,7 @@ class content extends base {
                             default:
                                 // Front end home page and other statistic pages
                                 // If page is login, check for user login session
-                                if (isset($this->request['method']))
+                                if (!empty($this->request['method']))
                                 {
                                     switch ($this->request['method'])
                                     {

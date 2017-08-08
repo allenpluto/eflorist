@@ -1,0 +1,1 @@
+<img src="[[*xs_file_uri]]">
