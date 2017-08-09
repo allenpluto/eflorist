@@ -3,12 +3,18 @@
     font-size: 1.2em;
 }
 
+/*# Manager Web Page Index #*/
 .manager_web_page_container
 {
     padding: 0.5em;
     margin-bottom: 1em;
 
-    background: rgba(255,255,255,0.8);
+    background: rgba(255,255,255,0.6);
+}
+
+.manager_web_page_image
+{
+    display: none;
 }
 
 .manager_web_page_title
@@ -34,11 +40,6 @@
 }
 
 @media only screen and (min-width: 768px) {
-    .manager_body_container
-    {
-        font-size: 1.2em;
-    }
-
     .manager_web_page_container
     {
         margin-bottom: 0;
@@ -49,11 +50,24 @@
         background: rgba(0,0,0,0.1);
     }
 
+    .manager_web_page_image
+    {
+        display: inline-block;
+        width: 8%;
+        height: 5em;
+        margin-right: 2%;
+
+        background: url("../image/logo.jpg") center center no-repeat;
+        background-size: cover;
+
+        vertical-align: middle;
+    }
+
     .manager_web_page_title,
     .manager_web_page_button_container
     {
         display: inline-block;
-        width: 50%;
+        width: 45%;
     }
 
     .manager_web_page_button_container
@@ -64,14 +78,14 @@
 
     .manager_web_page_button_container > .general_style_input_button
     {
-        width: 40%;
+        width: 10em;
 
         margin: 0;
         padding: 0.2em;
     }
 }
 
-
+/*# Manager Footer Action Bar #*/
 .footer_action_wrapper
 {
     display:block;

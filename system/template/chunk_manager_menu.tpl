@@ -24,7 +24,7 @@
     </div>
     <div class="off_canvas_menu_section">
         <div class="off_canvas_menu_item">
-            <a href="/logout">Logout</a>
+            <a href="logout">Logout</a>
         </div>
     </div>
 </div><!-- #off_canvas_menu -->

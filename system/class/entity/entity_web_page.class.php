@@ -9,7 +9,7 @@ class entity_web_page extends entity
     function fetch_value($parameter = array())
     {
         $default_parameter = array(
-            'table_fields'=>array('id','name')
+            'table_fields'=>array('id','image_id','name')
         );
         $parameter = array_merge($default_parameter,$parameter);
         return $this->get($parameter);

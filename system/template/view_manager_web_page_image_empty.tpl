@@ -1,0 +1,1 @@
+<div class="manager_web_page_image"></div>
