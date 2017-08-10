@@ -137,6 +137,7 @@ console.log(info_obj);
 
 $.fn.ajax_form = function(user_option) {
     var default_option = {
+        'action': 'update',
         'ajax_post':{
             'type': 'POST',
             'url': window.location.pathname,
@@ -152,6 +153,10 @@ $.fn.ajax_form = function(user_option) {
         if (option['form_data'])
         {
             form.data('form_data', option['form_data']);
+        }
+        if (option['action'])
+        {
+            form.data('action', option['action']);
         }
 
         form.on('display_message',function(event, message, message_type, auto_close){
@@ -218,9 +223,23 @@ $.fn.ajax_form = function(user_option) {
         });
 
         form.on('post_form_data',function(){
+            var validation_result = {};
+            form.trigger('validate_form_data',[validation_result]);
+
+            if (!validation_result['success'])
+            {
+                form.trigger('display_message',['Form Submission Failed<br>'+validation_result['error_message'],'error',6000]);
+                $('body').animate({
+                    'scrollTop': $('.form_row_container_error:eq(0)').position().top
+                },500);
+                setTimeout(function(){$('.form_row_container_error').removeClass('form_row_container_error')},10000);
+
+                return false;
+            }
+
             var update_data = {};
             form.trigger('get_update_data',[update_data]);
-
+            console.log(update_data);
             if ($.isEmptyObject(update_data))
             {
                 form.trigger('display_message',['Nothing Updated']);
@@ -231,7 +250,7 @@ $.fn.ajax_form = function(user_option) {
                 'id':form.data('form_data').id,
                 'form_data':update_data,
                 'file_type':'json',
-                'action':'save'
+                'action':form.data('action')
             };
             $.ajax({
                 'type': option['ajax_post']['type'],
@@ -243,15 +262,17 @@ $.fn.ajax_form = function(user_option) {
                 },
                 'timeout': option['ajax_post']['timeout']
             }).always(function (callback_obj, status, info_obj) {
+                console.log('Post Complete');
+                console.log(status);
                 form.removeClass('ajax_form_container_loading');
                 if (status == 'success') {
                     var data = callback_obj;
                     var xhr = info_obj;
-
+                    console.log(callback_obj);
                     if (callback_obj.status == 'OK')
                     {
                         var update_data = callback_obj.form_data;
-//console.log(update_data);
+                        console.log(update_data);
                         form.trigger('set_update_data',[update_data]);
                         form.trigger('display_message',['Listing Updated','success']);
                     }
@@ -286,6 +307,78 @@ $.fn.ajax_form = function(user_option) {
                     update_data[$(this).attr('name')] = $(this).val();
                 }
             });
+        });
+
+        form.on('validate_form_data',function(event, validation_result){
+            var error_message = [];
+            form.find('input, select, textarea').each(function(){
+                if ($(this).attr('name'))
+                {
+                    var form_row = $(this).closest('.form_row_container');
+                    if (!form_row.data('name'))
+                    {
+                        var form_row_name = $(this).attr('name');
+                        if (form_row.find('label').length > 0)
+                        {
+                            if ($(this).attr('id') && form_row.find('label[for="'+$(this).attr('id')+'"]').length > 0)
+                            {
+                                form_row_name = form_row.find('label[for="'+$(this).attr('id')+'"]').text();
+                            }
+                            else
+                            {
+                                form_row_name = form_row.find('label:eq(0)').text();
+                            }
+                        }
+                        form_row.data('name',form_row_name);
+                    }
+
+                    if (form_row.hasClass('form_row_container_mandatory') && !$(this).val())
+                    {
+                        error_message.push('"'+form_row.data('name')+'" is a mandatory field');
+                        form_row.addClass('form_row_container_error');
+                    }
+                    if (form_row.hasClass('form_row_container_phone') && $(this).val())
+                    {
+                        var reg_pattern = /^((([\+])?((\(0[2,3,7,8]\))|(0[2,3,7,8]))?(\s|-)?([0-9]{4})(\s|-)?([0-9]{4}))|((13|18|04)([0-9]{2})(\s|-)?([0-9]{3})(\s|-)?([0-9]{3})))$/;
+                        if (!reg_pattern.test($(this).val()))
+                        {
+                            error_message.push('Please enter a valid "'+form_row.data('name')+'". E.g. 02 9639 5566');
+                            form_row.addClass('form_row_container_error');
+                        }
+                    }
+                    if (form_row.hasClass('form_row_container_email') && $(this).val())
+                    {
+                        var reg_pattern = /^(([^<>()[\]\\.,;:\s@\"]+(\.[^<>()[\]\\.,;:\s@\"]+)*)|(\".+\"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
+                        if (!reg_pattern.test($(this).val()))
+                        {
+                            error_message.push('Please enter a valid "'+form_row.data('name')+'". E.g. john@gmail.com');
+                            form_row.addClass('form_row_container_error');
+                        }
+                    }
+                    if (form_row.hasClass('form_row_container_uri') && $(this).val())
+                    {
+                        var reg_pattern = /^(https?|ftp):\/\/(((([a-z]|\d|-|\.|_|~|[\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF])|(%[\da-f]{2})|[!\$&'\(\)\*\+,;=]|:)*@)?(((\d|[1-9]\d|1\d\d|2[0-4]\d|25[0-5])\.(\d|[1-9]\d|1\d\d|2[0-4]\d|25[0-5])\.(\d|[1-9]\d|1\d\d|2[0-4]\d|25[0-5])\.(\d|[1-9]\d|1\d\d|2[0-4]\d|25[0-5]))|((([a-z]|\d|[\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF])|(([a-z]|\d|[\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF])([a-z]|\d|-|\.|_|~|[\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF])*([a-z]|\d|[\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF])))\.)+(([a-z]|[\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF])|(([a-z]|[\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF])([a-z]|\d|-|\.|_|~|[\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF])*([a-z]|[\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF])))\.?)(:\d*)?)(\/((([a-z]|\d|-|\.|_|~|[\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF])|(%[\da-f]{2})|[!\$&'\(\)\*\+,;=]|:|@)+(\/(([a-z]|\d|-|\.|_|~|[\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF])|(%[\da-f]{2})|[!\$&'\(\)\*\+,;=]|:|@)*)*)?)?(\?((([a-z]|\d|-|\.|_|~|[\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF])|(%[\da-f]{2})|[!\$&'\(\)\*\+,;=]|:|@)|[\uE000-\uF8FF]|\/|\?)*)?(\#((([a-z]|\d|-|\.|_|~|[\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF])|(%[\da-f]{2})|[!\$&'\(\)\*\+,;=]|:|@)|\/|\?)*)?$/i;
+                        if (!reg_pattern.test($(this).val()))
+                        {
+                            error_message.push('Please enter a valid "'+form_row.data('name')+'". E.g. http://www.example.com');
+                            form_row.addClass('form_row_container_error');
+                        }
+                    }
+
+                }
+                if (error_message.length == 0)
+                {
+                    // TODO: Validation Passed
+                    validation_result['success'] = true;
+                }
+                else
+                {
+                    // TODO: Validation Failed
+                    validation_result['success'] = false;
+                    validation_result['error_message'] = '<span class="ajax_form_info_list">'+error_message.join('</span><span class="ajax_form_info_list">')+'</span>';
+                }
+            });
+
         });
     });
 }
@@ -1816,6 +1909,15 @@ function FrameOnload(){
     });
 }
 function BodyOnload(){
+    $('.footer_action_button_reset').click(function(event){
+        event.preventDefault();
+        $(this).closest('.ajax_form_container').trigger('retrieve_form_data');
+    });
+
+    $('.footer_action_button_save').click(function(event){
+        event.preventDefault();
+        $(this).closest('.ajax_form_container').trigger('post_form_data');
+    });
 }
 
 // Window Load/Resize Functions

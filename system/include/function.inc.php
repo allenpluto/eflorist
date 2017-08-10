@@ -547,15 +547,15 @@ function render_html($field = array())
                         $GLOBALS['time_stack']['create object '.$match_result_value['parameter']['object']] = microtime(1) - $GLOBALS['start_time'];
 
                         $result = $object->fetch_value();
-//if ($match_result_value['parameter']['object'] == 'view_business_detail_gallery')
-//{
-//    echo "\ntest point 3\n";
-//    print_r($field_row[$match_result_value['name']]);
-//    print_r($field_row_value);
-//    print_r($result);
-//    print_r($match_result_value);
-//    print_r($object);
-//}
+if ($match_result_value['parameter']['object'] == 'view_web_page')
+{
+    echo "\ntest point 3\n";
+    print_r($field_row[$match_result_value['name']]);
+    print_r($field_row_value);
+    print_r($result);
+    print_r($match_result_value);
+    print_r($object);
+}
                         $GLOBALS['time_stack']['fetch value '.$match_result_value['parameter']['object']] = microtime(1) - $GLOBALS['start_time'];
                         unset($object);
                         if (empty($result))
