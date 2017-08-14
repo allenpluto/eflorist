@@ -9,7 +9,7 @@
         [[$chunk_header]]
         <div class="wrapper body_wrapper">
             <div class="container body_container manager_body_container column_container">
-                [[category:template_name=`form_manager_edit_page`]]
+                [[*category:template_name=`form_manager_edit_category`]]
             </div>
         </div><!-- .body_wrapper -->
     </div>

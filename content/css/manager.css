@@ -85,6 +85,101 @@
     }
 }
 
+/*# Manager Product List Category #*/
+.manager_category_container
+{
+    padding: 0.5em;
+    margin-bottom: 1em;
+
+    background: rgba(255,255,255,0.6);
+}
+
+.manager_category_image
+{
+    display: none;
+}
+
+.manager_category_title
+{
+    padding: 0.2em 0;
+
+    font-weight: bold;
+}
+
+.manager_category_button_container
+{
+    padding: 0.3em 0;
+    text-align: center;
+}
+
+.manager_category_button_container > .general_style_input_button
+{
+    display: inline-block;
+    width: 8em;
+    margin: 0 0.5em;
+
+    padding: 0.5em;
+}
+
+@media only screen and (min-width: 768px) {
+    .manager_category_container
+    {
+        margin-bottom: 0;
+    }
+
+    .manager_category_container:nth-child(even)
+    {
+        background: rgba(0,0,0,0.1);
+    }
+
+    .manager_category_image
+    {
+        display: inline-block;
+        width: 8%;
+        height: 5em;
+        margin-right: 2%;
+
+        background: url("../image/logo.jpg") center center no-repeat;
+        background-size: cover;
+
+        vertical-align: middle;
+    }
+
+    .manager_category_title
+    {
+        display: inline-block;
+        width: 25%;
+    }
+
+    .manager_category_button_container
+    {
+        display: inline-block;
+        width: 65%;
+    }
+
+    .manager_category_button_container
+    {
+        padding: 0;
+        text-align: right;
+    }
+
+    .manager_category_button_container > .general_style_input_button
+    {
+        width: 10em;
+
+        margin: 0;
+        padding: 0.2em;
+    }
+}
+
+@media only screen and (max-width: 479px) {
+    .manager_category_button_container > .general_style_input_button
+    {
+        margin-bottom: 0.5em;
+    }
+
+}
+
 /*# Manager Footer Action Bar #*/
 .footer_action_wrapper
 {

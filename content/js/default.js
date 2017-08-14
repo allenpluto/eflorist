@@ -274,14 +274,14 @@ $.fn.ajax_form = function(user_option) {
                         var update_data = callback_obj.form_data;
                         console.log(update_data);
                         form.trigger('set_update_data',[update_data]);
-                        form.trigger('display_message',['Listing Updated','success']);
+                        form.trigger('display_message',['Update Succeeded','success']);
                     }
                 }
                 else {
                     var xhr = callback_obj;
                     var error = info_obj;
 
-                    form.trigger('display_message',['Add/Update Listing Failed, Error ['+status+'], Try again later<br>'+callback_obj.responseText,'error',10000]);
+                    form.trigger('display_message',['Add/Update Failed, Error ['+status+'], Try again later<br>'+callback_obj.responseText,'error',10000]);
                 }
             });
         });
