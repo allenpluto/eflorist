@@ -3,6 +3,89 @@
     font-size: 1.2em;
 }
 
+/*# Manager Index Items #*/
+.manager_list_item_container
+{
+    padding: 0.5em;
+    margin-bottom: 1em;
+
+    background: rgba(255,255,255,0.6);
+}
+
+.manager_list_item_image
+{
+    display: none;
+}
+
+.manager_list_item_title
+{
+    padding: 0.2em 0;
+
+    font-weight: bold;
+}
+
+.manager_list_item_button_container
+{
+    padding: 0.3em 0;
+    text-align: center;
+}
+
+.manager_list_item_button_container > .general_style_input_button
+{
+    display: inline-block;
+    width: 8em;
+    margin: 0 0.5em;
+
+    padding: 0.5em;
+}
+
+@media only screen and (min-width: 768px) {
+    .manager_list_item_container
+    {
+        margin-bottom: 0;
+    }
+
+    .manager_list_item_container:nth-child(even)
+    {
+        background: rgba(0,0,0,0.1);
+    }
+
+    .manager_list_item_image
+    {
+        display: inline-block;
+        width: 8%;
+        height: 5em;
+        margin-right: 2%;
+
+        background: url("../image/logo.jpg") center center no-repeat;
+        background-size: cover;
+
+        vertical-align: middle;
+    }
+
+    .manager_list_item_title,
+    .manager_list_item_button_container
+    {
+        display: inline-block;
+        width: 45%;
+    }
+
+    .manager_list_item_button_container
+    {
+        padding: 0;
+        text-align: right;
+    }
+
+    .manager_list_item_button_container > .general_style_input_button
+    {
+        width: 10em;
+
+        margin: 0;
+        padding: 0.2em;
+    }
+}
+
+
 /*# Manager Web Page Index #*/
 .manager_web_page_container
 {
@@ -305,6 +388,13 @@
     border-radius:3px;
 }
 
+.form_select_option_delete_trigger
+{
+    background: #ffffff;
+
+    border:2px solid #cccccc;
+}
+
 .form_row_container textarea
 {
     min-height: 6em;
@@ -349,7 +439,7 @@
 
     .form_row_container input[type="text"],
     .form_row_container input[type="password"],
-    .form_row_container select,
+    .form_row_container .form_select_container,
     .form_row_container textarea
     {
         display: inline-block;

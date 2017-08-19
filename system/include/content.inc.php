@@ -805,6 +805,11 @@ class content extends base {
                                         $entity_category_obj->get(array('where'=>'display_order >= 0','order'=>'display_order'));
                                         $this->content['field']['category'] = array_values($entity_category_obj->id_group);
                                         break;
+                                    case 'list_product':
+                                        $entity_product_obj = new entity_product();
+                                        $entity_product_obj->get(array('where'=>'display_order >= 0','order'=>'category_id,display_order'));
+                                        $this->content['field']['product'] = array_values($entity_product_obj->id_group);
+                                        break;
                                     case 'edit_category':
                                         if (!isset($this->request['option']['id']))
                                         {
@@ -915,6 +920,141 @@ class content extends base {
 
                                                 $form_ajax_data = array(
                                                     'id'=>$entity_category_data['id']
+                                                );
+                                                $form_ajax_data_string = json_encode($form_ajax_data);
+                                                $this->content['script']['ajax_form'] = array('content'=>'$(document).ready(function(){$(\'.ajax_form_container\').ajax_form({"form_data":'.$form_ajax_data_string.',"form_action":"save"}).trigger(\'store_form_data\');});');
+                                        }
+
+                                        break;
+                                    case 'edit_product':
+                                        if (!isset($this->request['option']['id']))
+                                        {
+                                            $this->message->notice = 'Redirect - edit product operating id not set';
+                                            $this->result['status'] = 301;
+                                            $this->result['header']['Location'] =  URI_SITE_BASE.$this->request['control_panel'].'/product/list_product';
+                                            return false;
+                                        }
+                                        $entity_product_obj = new entity_product($this->request['option']['id']);
+                                        if (empty($entity_product_obj->id_group))
+                                        {
+                                            $this->message->notice = 'Invalid request id';
+                                            $this->result['status'] = 404;
+                                            return false;
+                                        }
+                                        $entity_product_data = $entity_product_obj->get();
+                                        if ($entity_product_data === false)
+                                        {
+                                            $this->message->error = 'Fail to get entity data';
+                                            return false;
+                                        }
+                                        $entity_product_data = end($entity_product_data);
+
+                                        switch($this->request['action'])
+                                        {
+                                            case 'update':
+                                                if (!is_array($this->request['option']['form_data']))
+                                                {
+                                                    parse_str($this->request['option']['form_data'],$this->content['form_data']);
+                                                }
+                                                else
+                                                {
+                                                    $this->content['form_data'] = $this->request['option']['form_data'];
+                                                }
+
+                                                // Process image if provided
+                                                if (isset($this->content['form_data']['image_uri']))
+                                                {
+                                                    if (empty($this->content['form_data']['image_uri']))
+                                                    {
+                                                        $image_obj = new entity_image($entity_product_data['image_id']);
+                                                        $image_obj->delete();
+                                                        $this->content['form_data']['image_id'] = 0;
+                                                        unset($image_obj);
+                                                    }
+                                                    elseif (preg_match('/^data:/', $this->content['form_data']['image_uri']))
+                                                    {
+                                                        $image_obj = new entity_image($entity_product_data['image_id']);
+                                                        $image_obj->delete();
+                                                        $image_obj = new entity_image();
+                                                        $image_obj->set(array('row'=>array(array('name'=>$entity_product_data['name'].' Image','source_file'=>$this->content['form_data']['image_uri']))));
+                                                        $image_obj->sync();
+                                                        $this->content['form_data']['image_id'] =  implode(',',$image_obj->id_group);
+                                                        unset($image_obj);
+                                                    }
+                                                    unset($this->content['form_data']['image_uri']);
+                                                }
+
+                                                $entity_product_obj->update($this->content['form_data']);
+
+                                                $entity_product_data = $entity_product_obj->get(['fields'=>array_keys($this->content['form_data'])]);
+                                                if ($entity_product_data === false)
+                                                {
+                                                    $this->result['content']['status'] = 'SERVER_ERROR';
+                                                    $this->result['content']['message'] = 'Database update request failed, try again later';
+                                                    return true;
+                                                }
+                                                $entity_product_data = end($entity_product_data);
+
+                                                if (isset($entity_product_data['image_id']))
+                                                {
+                                                    if (empty($entity_product_data['image_id']))
+                                                    {
+                                                        $entity_product_data['image_uri'] = '';
+                                                    }
+                                                    else
+                                                    {
+                                                        $view_image_obj = new view_image($this->content['form_data']['image_id']);
+                                                        $view_image_obj->fetch_value();
+                                                        if (!empty($view_image_obj->row))
+                                                        {
+                                                            $image_data = end($view_image_obj->row);
+                                                            $entity_product_data['image_uri'] = $image_data['file_uri'];
+                                                            unset($image_data);
+                                                        }
+                                                        unset($view_image_obj);
+                                                    }
+                                                    unset($entity_product_data['image_id']);
+                                                }
+
+                                                $entity_product_obj->sync();
+
+                                                $this->result['content']['status'] = 'OK';
+                                                $this->result['content']['message'] = 'product updated successfully';
+                                                $this->result['content']['form_data'] = $entity_product_data;
+                                                break;
+                                            default:
+                                                $this->content['field']['product'] = $entity_product_data;
+                                                $image_uploader_data = array(
+                                                    'width'=>400,
+                                                    'height'=>400,
+                                                    'allow_delete'=>true,
+                                                    'shrink_large'=>true,
+                                                    'default_image'=>'./image/upload_image.jpg'
+                                                );
+                                                $image_uploader_data_string = json_encode($image_uploader_data);
+                                                $this->content['script']['image_uploader'] = array('content'=>'$(document).ready(function(){$(\'.form_image_uploader_container\').form_image_uploader('.$image_uploader_data_string.');});');
+
+                                                // Show all active category in select drop down
+                                                $view_category_obj = new view_category(array('page_size'=>100));
+                                                $view_category_obj->get(['where'=>'display_order >= 0','order'=>'display_order']);
+                                                $active_category = $view_category_obj->fetch_value(['table_fields'=>['id','name']]);
+                                                if (empty($active_category))
+                                                {
+                                                    $this->message->error = 'Fail to get active categories';
+                                                    return false;
+                                                }
+                                                $active_category_sort = [];
+                                                foreach ($active_category as $row_index=>$row)
+                                                {
+                                                    $active_category_sort[] = $row['name'];
+                                                }
+                                                array_multisort($active_category_sort,$active_category);
+                                                $active_category_string = json_encode(array_values($active_category));
+
+                                                $this->content['script']['category_select'] = ['content'=>'$(document).ready(function(){$(\'#form_manager_product_category\').form_select({"select_option":'.$active_category_string.',"max_select_allowed":1});});'];
+
+                                                $form_ajax_data = array(
+                                                    'id'=>$entity_product_data['id']
                                                 );
                                                 $form_ajax_data_string = json_encode($form_ajax_data);
                                                 $this->content['script']['ajax_form'] = array('content'=>'$(document).ready(function(){$(\'.ajax_form_container\').ajax_form({"form_data":'.$form_ajax_data_string.',"form_action":"save"}).trigger(\'store_form_data\');});');

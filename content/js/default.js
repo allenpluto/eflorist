@@ -784,9 +784,15 @@ $.fn.form_select = function(user_option){
             var select_display = form_select.find('.form_select_display_container');
             select_input.html('');
             select_display.html('');
+            var default_option_text = '-- Select One --';
+            if (select_input.attr('placeholder'))
+            {
+                default_option_text = select_input.attr('placeholder');
+            }
             $('<option />',{
                 'value':''
-            }).html('-- Select One --').appendTo(select_input);
+            }).html(default_option_text).appendTo(select_input);
+console.log(form_select_option);
             $.each(form_select_option, function(index, item){
                 form_select_option_flip[item] = index;
                 $('<option />',{
