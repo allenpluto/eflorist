@@ -12,6 +12,24 @@
     background: rgba(255,255,255,0.6);
 }
 
+.manager_list_item_add_label
+{
+    padding-right: 1em;
+    font-weight: bold;
+}
+
+.manager_list_item_add_name
+{
+    padding: 0.5em 1em;
+    border-radius: 3px;
+}
+
+.manager_list_item_add_submit
+{
+    width: 8em;
+    margin-left: 1em;
+}
+
 .manager_list_item_image
 {
     display: none;

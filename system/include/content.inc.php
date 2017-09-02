@@ -287,7 +287,7 @@ class content extends base {
                         }
                         else
                         {
-                            $method = array('list_category','list_product','edit_category','edit_product');
+                            $method = array('add_category','add_product','delete_category','delete_product','list_category','list_product','edit_category','edit_product');
                             if (in_array($request_path_part,$method))
                             {
                                 $this->request['method'] = $request_path_part;
@@ -800,6 +800,112 @@ class content extends base {
                             case 'manager':
                                 switch($this->request['method'])
                                 {
+                                    case 'add_category':
+                                        if (!isset($this->request['option']['name']))
+                                        {
+                                            $this->message->notice = 'Redirect - add category without name';
+                                            $this->result['status'] = 301;
+                                            $this->result['header']['Location'] =  URI_SITE_BASE.$this->request['control_panel'].'/product/list_category';
+                                            return false;
+                                        }
+                                        $set_parameter = array('row'=>array(array('name'=>$this->request['option']['name'])),'fields'=>array('name'));
+                                        $entity_category_obj = new entity_category();
+                                        $entity_category_obj->set($set_parameter);
+                                        if (!empty($entity_category_obj->id_group))
+                                        {
+                                            $entity_category_obj->sync();
+                                            $this->result['status'] = 301;
+                                            $this->result['header']['Location'] =  URI_SITE_BASE.$this->request['control_panel'].'/product/edit_category?id='.implode(',',$entity_category_obj->id_group);
+                                        }
+                                        else
+                                        {
+                                            $this->result['content'] = 'Add Category Failed';
+                                        }
+                                        break;
+                                    case 'add_product':
+                                        if (!isset($this->request['option']['name']))
+                                        {
+                                            $this->message->notice = 'Redirect - add product without name';
+                                            $this->result['status'] = 301;
+                                            $this->result['header']['Location'] =  URI_SITE_BASE.$this->request['control_panel'].'/product/list_product';
+                                            return false;
+                                        }
+                                        $set_parameter = array('row'=>array(array('name'=>$this->request['option']['name'])),'fields'=>array('name'));
+                                        if (!empty($this->request['option']['category_id']))
+                                        {
+                                            $set_parameter['row'][0]['category_id'] = $this->request['option']['category_id'];
+                                            $set_parameter['fields'][] = 'category_id';
+                                        }
+                                        $entity_product_obj = new entity_product();
+                                        $entity_product_obj->set($set_parameter);
+                                        if (!empty($entity_product_obj->id_group))
+                                        {
+                                            $entity_product_obj->sync();
+                                            if (!empty($this->request['option']['category_id']))
+                                            {
+                                                $entity_product_in_category_obj = new entity_product();
+                                                $get_parameter = array('where'=>array('category_id = :category_id'),'order'=>'display_order','bind_param'=>array(':category_id'=>$this->request['option']['category_id']));
+                                                $entity_product_in_category_obj->get($get_parameter);
+                                                $display_order = 0;
+                                                foreach($entity_product_in_category_obj->id_group as $id_index=>$id)
+                                                {
+                                                    $update_entity_product_obj = new entity_product($id);
+                                                    $update_entity_product_obj->update(array('display_order'=>$display_order));
+                                                }
+                                                $entity_product_in_category_obj->sync();
+                                            }
+                                            $this->result['status'] = 301;
+                                            $this->result['header']['Location'] =  URI_SITE_BASE.$this->request['control_panel'].'/product/edit_product?id='.implode(',',$entity_product_obj->id_group);
+                                        }
+                                        else
+                                        {
+                                            $this->result['content'] = 'Add Product Failed';
+                                        }
+                                        break;
+                                    case 'delete_category':
+                                        if (!isset($this->request['option']['id']))
+                                        {
+                                            $this->message->notice = 'Redirect - edit category operating id not set';
+                                            $this->result['status'] = 301;
+                                            $this->result['header']['Location'] =  URI_SITE_BASE.$this->request['control_panel'].'/product/list_category';
+                                            return false;
+                                        }
+                                        $entity_category_obj = new entity_category($this->request['option']['id']);
+                                        if (empty($entity_category_obj->id_group))
+                                        {
+                                            $this->message->notice = 'Invalid request id';
+                                            $this->result['status'] = 404;
+                                            return false;
+                                        }
+                                        $entity_category_obj->delete();
+                                        $entity_category_obj->sync();
+                                        $this->result['status'] = 301;
+                                        $this->result['header']['Location'] =  URI_SITE_BASE.$this->request['control_panel'].'/product/list_category';
+                                        break;
+                                    case 'delete_product':
+                                        if (!isset($this->request['option']['id']))
+                                        {
+                                            $this->message->notice = 'Redirect - delete product operating id not set';
+                                            $this->result['status'] = 301;
+                                            $this->result['header']['Location'] =  URI_SITE_BASE.$this->request['control_panel'].'/product/list_product';
+                                            return false;
+                                        }
+                                        $entity_product_obj = new entity_product($this->request['option']['id']);
+                                        if (empty($entity_product_obj->id_group))
+                                        {
+                                            $this->message->notice = 'Invalid request id';
+                                            $this->result['status'] = 404;
+                                            return false;
+                                        }
+                                        $entity_product_obj->delete();
+                                        $entity_product_obj->sync();
+                                        $this->result['status'] = 301;
+                                        $this->result['header']['Location'] =  URI_SITE_BASE.$this->request['control_panel'].'/product/list_product';
+                                        if (!empty($this->request['option']['category_id']))
+                                        {
+                                            $this->result['header']['Location'] .= '?category_id='.$this->request['option']['category_id'];
+                                        }
+                                        break;
                                     case 'list_category':
                                         $entity_category_obj = new entity_category();
                                         $entity_category_obj->get(array('where'=>'display_order >= 0','order'=>'display_order'));
@@ -807,7 +913,18 @@ class content extends base {
                                         break;
                                     case 'list_product':
                                         $entity_product_obj = new entity_product();
-                                        $entity_product_obj->get(array('where'=>'display_order >= 0','order'=>'category_id,display_order'));
+                                        $get_parameter = array('where'=>array('display_order >= 0'),'order'=>'category_id,display_order','bind_param'=>array());
+                                        if (isset($this->request['option']['category_id']))
+                                        {
+                                            $category_id = $this->format->id_group(array('key_prefix'=>':category_id_','value'=>$this->request['option']['category_id']));
+                                            if (!empty($category_id))
+                                            {
+                                                $get_parameter['bind_param'] = array_merge($get_parameter['bind_param'],$category_id);
+                                                $get_parameter['where'][] = 'category_id IN ('.implode(',',array_keys($category_id)).')';
+                                                $this->content['field']['category_id'] = end($category_id);
+                                            }
+                                        }
+                                        $entity_product_obj->get($get_parameter);
                                         $this->content['field']['product'] = array_values($entity_product_obj->id_group);
                                         break;
                                     case 'edit_category':

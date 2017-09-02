@@ -784,15 +784,7 @@ $.fn.form_select = function(user_option){
             var select_display = form_select.find('.form_select_display_container');
             select_input.html('');
             select_display.html('');
-            var default_option_text = '-- Select One --';
-            if (select_input.attr('placeholder'))
-            {
-                default_option_text = select_input.attr('placeholder');
-            }
-            $('<option />',{
-                'value':''
-            }).html(default_option_text).appendTo(select_input);
-console.log(form_select_option);
+
             $.each(form_select_option, function(index, item){
                 form_select_option_flip[item] = index;
                 $('<option />',{
@@ -800,19 +792,30 @@ console.log(form_select_option);
                 }).html(index).appendTo(select_input);
             });
             var option_selected = form_select.find('.form_select_result').val();
-            option_selected = option_selected.split(',');
-            option_selected.sort();
             var option_selected_result = [];
-            option_selected.forEach(function(item,index){
-                select_input.find('option[value="'+item+'"]').remove();
-                if (form_select_option_flip[item])
-                {
-                    $('<div />',{
-                        'class':'form_select_option_delete_trigger'
-                    }).html(form_select_option_flip[item]).data('value',item).appendTo(select_display);
-                    option_selected_result.push(item);
-                }
-            });
+
+            if (option_selected)
+            {
+                option_selected = option_selected.split(',');
+                option_selected.sort();
+                option_selected.forEach(function(item,index){
+                    select_input.find('option[value="'+item+'"]').remove();
+                    if (form_select_option_flip[item])
+                    {
+                        $('<div />',{
+                            'class':'form_select_option_delete_trigger'
+                        }).html(form_select_option_flip[item]).data('value',item).appendTo(select_display);
+                        option_selected_result.push(item);
+                    }
+                });
+            }
+            else
+            {
+                $('<option />',{
+                    'value':''
+                }).html('-- Select --').prependTo(select_input);
+                select_input.val('');
+            }
             if (option_selected_result.length >= option['max_select_allowed'])
             {
                 select_input.hide();

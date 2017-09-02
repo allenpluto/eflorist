@@ -6,8 +6,8 @@
                 <label for="form_manager_product_name">Product Name</label>
                 <input id="form_manager_product_name" name="name" type="text" placeholder="Product Name" value="[[*name]]">
             </div>
-            <div class="form_row_container form_row_container_mandatory">
-                <label for="form_manager_product_alternate_name">Product Code Name</label>
+            <div class="form_row_container">
+                <label for="form_manager_product_alternate_name">Code Name</label>
                 <input id="form_manager_product_alternate_name" name="alternate_name" type="text" placeholder="Product Code Name" value="[[*alternate_name]]">
             </div>
             <div class="form_row_container">
@@ -22,7 +22,7 @@
                 <label for="form_manager_product_price">Price</label>
                 <input id="form_manager_product_price" name="price" type="text" placeholder="Price" value="[[*price]]">
             </div>
-            <div class="form_row_container">
+            <div class="form_row_container form_row_container_mandatory">
                 <label for="form_manager_product_category">Category</label>
                 <div id="form_manager_product_category" class="form_select_container">
                     <input class="form_select_result" name="category" type="hidden" value="[[*category_id]]">
@@ -32,7 +32,7 @@
             </div>
             <div class="form_bottom_row_container"></div>
             <div class="footer_action_wrapper"><!--
-            --><a href="[[*base]]manager/product/list_product" class="footer_action_button footer_action_button_back">Back</a><!--
+            --><a href="[[*base]]manager/product/list_product?category_id=[[*category_id]]" class="footer_action_button footer_action_button_back">Back</a><!--
             --><a href="javascript:void(0)" class="footer_action_button footer_action_button_reset">Reset</a><!--
             --><a href="javascript:void(0)" class="footer_action_button footer_action_button_save">Save</a><!--
         --></div>
