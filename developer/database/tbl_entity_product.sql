@@ -3,7 +3,7 @@
 -- http://www.phpmyadmin.net
 --
 -- Host: 127.0.0.1
--- Generation Time: Jul 08, 2017 at 10:50 AM
+-- Generation Time: Aug 19, 2017 at 05:37 AM
 -- Server version: 5.6.17
 -- PHP Version: 5.5.12
 
@@ -26,7 +26,6 @@ SET time_zone = "+00:00";
 -- Table structure for table `tbl_entity_product`
 --
 
-DROP TABLE IF EXISTS `tbl_entity_product`;
 CREATE TABLE IF NOT EXISTS `tbl_entity_product` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
   `friendly_uri` varchar(200) COLLATE utf8_unicode_ci NOT NULL,
@@ -34,8 +33,8 @@ CREATE TABLE IF NOT EXISTS `tbl_entity_product` (
   `alternate_name` varchar(200) COLLATE utf8_unicode_ci NOT NULL DEFAULT '',
   `description` varchar(500) COLLATE utf8_unicode_ci NOT NULL DEFAULT '',
   `image_id` int(11) NOT NULL DEFAULT '0',
-  `enter_time` timestamp NOT NULL DEFAULT '0000-00-00 00:00:00',
-  `update_time` timestamp NOT NULL DEFAULT '0000-00-00 00:00:00' ON UPDATE CURRENT_TIMESTAMP,
+  `enter_time` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  `update_time` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
   `price` decimal(6,2) NOT NULL DEFAULT '0.00',
   `category_id` int(11) NOT NULL DEFAULT '0',
   `display_order` int(11) NOT NULL DEFAULT '-1',
