@@ -298,6 +298,17 @@ class content extends base {
                             }
                         }
                         break;
+                    case 'mail':
+                        $method = array('enquiry','contact');
+                        if (in_array($request_path_part,$method))
+                        {
+                            $this->request['method'] = $request_path_part;
+                        }
+                        else
+                        {
+                            $this->request['method'] = 'test';
+                        }
+                        break;
                     default:
                         if ($this->request['control_panel'] == '')
                         {
@@ -1218,6 +1229,17 @@ class content extends base {
 
                         }
 
+                        break;
+                    case 'mail':
+                        switch($this->request['method'])
+                        {
+                            case 'enquiry':
+                                break;
+                            case 'contact':
+                                break;
+                            case 'test':
+                            default:
+                        }
                         break;
                     default:
                         // Default module, front end static pages, control panel home pages...
