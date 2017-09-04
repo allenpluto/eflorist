@@ -299,7 +299,7 @@ class content extends base {
                         }
                         break;
                     case 'mail':
-                        $method = array('enquiry','contact');
+                        $method = array('inquiry','order');
                         if (in_array($request_path_part,$method))
                         {
                             $this->request['method'] = $request_path_part;
@@ -1233,9 +1233,9 @@ class content extends base {
                     case 'mail':
                         switch($this->request['method'])
                         {
-                            case 'enquiry':
+                            case 'inquiry':
                                 break;
-                            case 'contact':
+                            case 'order':
                                 break;
                             case 'test':
                             default:
@@ -1608,6 +1608,13 @@ class content extends base {
                                             return false;
                                         }
                                         $this->content['field'] = array_merge($this->content['field'],end($page_fetched_value));
+
+                                        $email_page = array('inquiry','order');
+
+                                        if (in_array($this->request['document'],$email_page))
+                                        {
+                                            $this->content['script']['ajax_form'] = array('content'=>'$(document).ready(function(){var form = $(\'.ajax_form_container\');$(\'.ajax_form_container\').ajax_form();var post_value = {\'client_name\':$(\'input[name="client_name"]\').val(),\'client_email\':$(\'input[name="client_email"]\').val(),\'client_telephone\':$(\'input[name="client_telephone"]\').val(),\'client_message\':$(\'textarea[name="client_message"]\').val()};$.ajax({\'type\': \'POST\',\'url\': \''.URI_SITE_BASE.'mail/'.$this->request['document'].'\',\'data\': post_value,\'dataType\': \'json\',\'beforeSend\': function (ajax_obj,option_obj) {form.addClass(\'ajax_form_container_loading\');},\'timeout\': 12000}).always(function (callback_obj, status, info_obj) {form.removeClass(\'ajax_form_container_loading\');if (status == \'success\') {var data = callback_obj;var xhr = info_obj;console.log(callback_obj);if (callback_obj.status == \'OK\'){var update_data = callback_obj.form_data;form.trigger(\'display_message\',[\'Email Sent\',\'success\']);}}else {var xhr = callback_obj;var error = info_obj;form.trigger(\'display_message\',[\'Failed to send email, Error [\'+status+\'], Try again later<br>\'+callback_obj.responseText,\'error\',10000]);}});});');
+                                        }
                                     }
                                     else
                                     {

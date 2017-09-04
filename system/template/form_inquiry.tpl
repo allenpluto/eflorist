@@ -1,5 +1,5 @@
 <div class="section_container form_container">
-    <div class="section_title"><h1>Send Enquiry</h1></div>
+    <div class="section_title"><h1>Send Inquiry</h1></div>
     <div class="section_content ajax_form_container">
         <form id="form_enquiry" class="ajax_form">
             <div class="form_row_container form_row_container_mandatory">

@@ -16,7 +16,7 @@
             <a href="make-payment"><span>Make Payment</span></a>
         </div>
         <div class="off_canvas_menu_item">
-            <a href="enquiry"><span>Enquiry</span></a>
+            <a href="inquiry"><span>Inquiry</span></a>
         </div>
     </div><!-- #off_canvas_menu_section_main_menu -->
     <div id="" class="off_canvas_menu_section">
