@@ -258,7 +258,7 @@ class content extends base {
                 }
 
                 //$request_path_part = array_shift($request_path);
-                $module = array('product');
+                $module = array('product','mail');
                 if (in_array($request_path_part,$module))
                 {
                     $this->request['module'] = $request_path_part;
@@ -1231,14 +1231,46 @@ class content extends base {
 
                         break;
                     case 'mail':
+                        $this->content['format'] = 'json';
+                        $email_option = array(
+                            'to'=>'flower@efloristwagga.com.au',
+                            'headers'=>'MIME-Version: 1.0'.PHP_EOL.'Content-type:text/html;charset=UTF-8'.PHP_EOL.'From: no-reply@eflorist.com.au'.PHP_EOL.'Bcc: daixi.wu@gmail.com'.PHP_EOL,
+                            'subject'=>'Testing Email',
+                            'message'=>'Testing Email Content'
+                        );
+
                         switch($this->request['method'])
                         {
                             case 'inquiry':
+                                $email_option['subject'] = 'Inquiry';
+                                $email_option['headers'] .= 'Reply-To: '.$this->request['option']['client_name'].'<'.$this->request['option']['client_email'].'>'.PHP_EOL;
+                                $email_option['message'] = '<table>';
+                                $email_option['message'] .= '<tr><td>Name</td><td>'.$this->request['option']['client_name'].'</td></tr>';
+                                $email_option['message'] .= '<tr><td>Email</td><td>'.$this->request['option']['client_email'].'</td></tr>';
+                                if (!empty($this->request['option']['client_telephone']))
+                                {
+                                    $email_option['message'] .= '<tr><td>Tel</td><td>'.$this->request['option']['client_telephone'].'</td></tr>';
+                                }
+                                $email_option['message'] .= '<tr><td colspan="2">Message</td></tr>';
+                                $email_option['message'] .= '<tr><td colspan="2">'.$this->request['option']['client_message'].'</td></tr>';
+                                $email_option['message'] .= '</table>';
                                 break;
                             case 'order':
                                 break;
                             case 'test':
                             default:
+                        }
+
+                        $email_result = mail($email_option['to'],$email_option['subject'],$email_option['message'],$email_option['headers']);
+                        if (empty($email_result))
+                        {
+                            $this->result['content']['status'] = 'OK';
+                            $this->result['content']['message'] = 'Email Sent';
+                        }
+                        else
+                        {
+                            $this->result['content']['status'] = 'Fail';
+                            $this->result['content']['message'] = 'Failed to Send Email';
                         }
                         break;
                     default:
@@ -1613,7 +1645,7 @@ class content extends base {
 
                                         if (in_array($this->request['document'],$email_page))
                                         {
-                                            $this->content['script']['ajax_form'] = array('content'=>'$(document).ready(function(){var form = $(\'.ajax_form_container\');$(\'.ajax_form_container\').ajax_form();var post_value = {\'client_name\':$(\'input[name="client_name"]\').val(),\'client_email\':$(\'input[name="client_email"]\').val(),\'client_telephone\':$(\'input[name="client_telephone"]\').val(),\'client_message\':$(\'textarea[name="client_message"]\').val()};$.ajax({\'type\': \'POST\',\'url\': \''.URI_SITE_BASE.'mail/'.$this->request['document'].'\',\'data\': post_value,\'dataType\': \'json\',\'beforeSend\': function (ajax_obj,option_obj) {form.addClass(\'ajax_form_container_loading\');},\'timeout\': 12000}).always(function (callback_obj, status, info_obj) {form.removeClass(\'ajax_form_container_loading\');if (status == \'success\') {var data = callback_obj;var xhr = info_obj;console.log(callback_obj);if (callback_obj.status == \'OK\'){var update_data = callback_obj.form_data;form.trigger(\'display_message\',[\'Email Sent\',\'success\']);}}else {var xhr = callback_obj;var error = info_obj;form.trigger(\'display_message\',[\'Failed to send email, Error [\'+status+\'], Try again later<br>\'+callback_obj.responseText,\'error\',10000]);}});});');
+                                            $this->content['script']['ajax_form'] = array('content'=>'$(document).ready(function() {var form = $(\'.ajax_form_container\');var ajax_form_info = form.find(\'.ajax_form_info\');var post_value = {\'client_name\': $(\'input[name="client_name"]\').val(),\'client_email\': $(\'input[name="client_email"]\').val(),\'client_telephone\': $(\'input[name="client_telephone"]\').val(),\'client_message\': $(\'textarea[name="client_message"]\').val()};$.ajax({\'type\': \'POST\',\'url\': \''.URI_SITE_BASE.'mail/'.$this->request['document'].'\',\'data\': post_value,\'dataType\': \'json\',\'beforeSend\': function(ajax_obj, option_obj) {form.addClass(\'ajax_form_container_loading\');},\'timeout\': 12000}).always(function(callback_obj, status, info_obj) {form.removeClass(\'ajax_form_container_loading\');if (status == \'success\') {var data = callback_obj;var xhr = info_obj;console.log(callback_obj);if (callback_obj.status == \'OK\') {var update_data = callback_obj.form_data;ajax_form_info.addClass(\'ajax_form_info_success\').html(\'Email Sent\');setTimeout(function(){form.removeClass(\'ajax_form_container_display_info\');ajax_form_info.delay(500).removeClass(\'ajax_form_info_success\').html(\'\');},3000);}else{ajax_form_info.addClass(\'ajax_form_info_error\').html(\'Failed to send email\');setTimeout(function(){form.removeClass(\'ajax_form_container_display_info\');ajax_form_info.delay(500).removeClass(\'ajax_form_info_error\').html(\'\');},3000);}} else {var xhr = callback_obj;var error = info_obj;ajax_form_info.addClass(\'ajax_form_info_error\').html(\'Failed to send email, Error [\' + status + \'], Try again later<br>\' + callback_obj.responseText);setTimeout(function(){form.removeClass(\'ajax_form_container_display_info\');ajax_form_info.delay(500).removeClass(\'ajax_form_info_error\').html(\'\');},10000);}});});');
                                         }
                                     }
                                     else

@@ -2002,22 +2002,27 @@ img {display:block;max-width:100%;}
 }
 
 /*# Body/Default/Enquiry #*/
-#form_enquiry label
+#form_inquiry_container
+{
+    position: relative;
+}
+
+#form_inquiry label
 {
     width: 25%;
 }
-#form_enquiry input[type='text'],
-#form_enquiry textarea
+#form_inquiry input[type='text'],
+#form_inquiry textarea
 {
     width: 70%;
 }
 
-#form_enquiry .form_row_button_container
+#form_inquiry .form_row_button_container
 {
     text-align: right;
 }
 
-#form_enquiry .general_style_input_button
+#form_inquiry .general_style_input_button
 {
     display: inline-block;
     width: 10em;
