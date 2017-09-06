@@ -902,6 +902,46 @@ function get_remote_ip()
     return $_SERVER['REMOTE_ADDR'];
 }
 
+function validate_recaptcha($captcha_response, &$error)
+{
+    if (!empty($captcha_response))
+    {
+        $data = [
+            'secret' => '6LdJNS8UAAAAAAAkWFEjW2EwWLkZFPIZ14fiJ1eB',
+            'response' => $captcha_response
+        ];
+        $ip = get_remote_ip();
+        if (!empty($ip))
+        {
+            $data['remoteip'] = $ip;
+            unset($ip);
+        }
+
+        $verify = curl_init();
+        curl_setopt($verify, CURLOPT_URL, "https://www.google.com/recaptcha/api/siteverify");
+        curl_setopt($verify, CURLOPT_POST, true);
+        curl_setopt($verify, CURLOPT_POSTFIELDS, http_build_query($data));
+        curl_setopt($verify, CURLOPT_SSL_VERIFYPEER, false);
+        curl_setopt($verify, CURLOPT_RETURNTRANSFER, true);
+        $output = curl_exec($verify);
+        $response = json_decode($output,true);
+
+        if ( ! $response['success'])
+        {
+            $error .= ($error ? '<br>&#149;&nbsp;' : '') . 'Incorrect recaptcha.'.print_r($response['error-codes'],true);
+        }
+
+        return $response['success'];
+    }
+    else
+    {
+        $error .= ($error ? '<br>&#149;&nbsp;' : '') . 'Recaptcha is required.';
+    }
+
+    return false;
+}
+
+
 // PHP compatible issue fix
 if (!function_exists('mime_content_type'))
 {

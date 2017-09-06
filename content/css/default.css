@@ -2029,6 +2029,16 @@ img {display:block;max-width:100%;}
     margin-right: 5%;
 }
 
+#form_inquiry_recaptcha
+{
+    text-align: center;
+}
+
+#form_inquiry_recaptcha > div
+{
+    display: inline-block;
+}
+
 /*# Body/Product/Category #*/
 .category_container
 {

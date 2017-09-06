@@ -68,8 +68,8 @@ $.fn.ajax_loader = function(user_option) {
                         'data': post_value,
                         'timeout': 10000
                     }).always(function (callback_obj, status, info_obj) {
-console.log(callback_obj);
-console.log(info_obj);
+                        console.log(callback_obj);
+                        console.log(info_obj);
                         ajax_loader_container.removeClass('ajax_loader_container_loading');
                         if (status == 'success') {
                             var data = callback_obj;
@@ -154,6 +154,10 @@ $.fn.ajax_form = function(user_option) {
         {
             form.data('form_data', option['form_data']);
         }
+        else
+        {
+            form.data('form_data', {});
+        }
         if (option['action'])
         {
             form.data('action', option['action']);
@@ -199,8 +203,7 @@ $.fn.ajax_form = function(user_option) {
         });
 
         form.on('store_form_data',function(){
-            var form_data = {};
-            form_data = form.data('form_data');
+            var form_data = form.data('form_data');
             form.find('input, select, textarea').each(function(){
                 if ($(this).attr('name'))
                 {
@@ -211,8 +214,7 @@ $.fn.ajax_form = function(user_option) {
         });
 
         form.on('retrieve_form_data',function(){
-            var form_data = {};
-            form_data = form.data('form_data');
+            var form_data = form.data('form_data');
             form.find('input, select, textarea').each(function(){
                 if ($(this).attr('name') && (typeof form_data[$(this).attr('name')] !== 'undefined'))
                 {
@@ -252,6 +254,10 @@ $.fn.ajax_form = function(user_option) {
                 'file_type':'json',
                 'action':form.data('action')
             };
+            if (form.data('form_data').id)
+            {
+                post_value['id'] = form.data('form_data').id;
+            }
             $.ajax({
                 'type': option['ajax_post']['type'],
                 'url': option['ajax_post']['url'],
@@ -288,8 +294,7 @@ $.fn.ajax_form = function(user_option) {
 
         form.on('set_update_data',function(event, update_data){
 //console.log('set_update_data');
-            var form_data = {};
-            form_data = form.data('form_data');
+            var form_data = form.data('form_data');
             $.each(update_data, function(index, value){
                 form_data[index] = value;
                 form.find('input[name="'+index+'"], select[name="'+index+'"], textarea[name="'+index+'"]').val(value).trigger('change');
@@ -299,8 +304,7 @@ $.fn.ajax_form = function(user_option) {
         });
 
         form.on('get_update_data',function(event, update_data){
-            var form_data = {};
-            form_data = form.data('form_data');
+            var form_data = form.data('form_data');
             form.find('input, select, textarea').each(function(){
                 if ($(this).attr('name') && form_data[$(this).attr('name')] != $(this).val())
                 {
@@ -435,7 +439,7 @@ $.fn.expandable_content = function(user_option){
         {
             expand_parent.data('multi_expanded', 1);
         }
-            
+
         expand_parent.children('.expand_trigger').click(function(event){
             event.preventDefault();
             var expand_parent = $(this).parent();
@@ -598,7 +602,7 @@ $.fn.form_image_uploader = function(user_option){
         source_image[0].onload = function(){
             var source_image_width = source_image[0].width;
             var source_image_height = source_image[0].height;
-            
+
             if (source_image_height <= 0)
             {
                 console.log('source image height null error');
@@ -615,7 +619,7 @@ $.fn.form_image_uploader = function(user_option){
                     {
                         source_image_height = option['height'];
                         source_image_width = source_image_ratio * source_image_height;
-                    }                    
+                    }
                 }
                 else
                 {
@@ -690,9 +694,9 @@ $.fn.form_image_uploader = function(user_option){
                                 {
                                     call_back();
                                 }
-                            }                            
+                            }
                         };
-                
+
                         // Pass the reader the file to read and give us the DataURL
                         reader.readAsDataURL(file);
                     }
@@ -753,7 +757,7 @@ $.fn.form_image_uploader = function(user_option){
                 //result_image.attr('src',option['default_image']);
                 image_uploader_result.val('').change();
                 image_uploader.addClass('form_image_uploader_container_empty');
-            });    
+            });
         }
     });
 };
@@ -879,61 +883,61 @@ $.fn.form_js_selector = function(user_option){
 
             switch (event.which)
             {
-            case 38:
-                // Key Arrow Up Pressed
-                event.preventDefault();
-                if (chosen_item.length == 1)
-                {
-                    if (chosen_item_index <= 0)
+                case 38:
+                    // Key Arrow Up Pressed
+                    event.preventDefault();
+                    if (chosen_item.length == 1)
                     {
-                        chosen_item_index = 0;
+                        if (chosen_item_index <= 0)
+                        {
+                            chosen_item_index = 0;
+                        }
+                        else
+                        {
+                            chosen_item_index--;
+                        }
+                        chosen_item.removeClass('form_js_select_drop_down_item_chosen');
+                        chosen_item = active_list.eq(chosen_item_index);
+                        chosen_item.addClass('form_js_select_drop_down_item_chosen');
+                        js_select_drop_down.scrollTop(chosen_item_index*chosen_item.outerHeight());
                     }
-                    else
+                    break;
+                case 40:
+                    // Key Arrow Down Pressed
+                    event.preventDefault();
+                    if (chosen_item.length == 1)
                     {
-                        chosen_item_index--;
+                        if (chosen_item_index >= active_list_length-1)
+                        {
+                            chosen_item_index = active_list_length-1;
+                        }
+                        else
+                        {
+                            chosen_item_index++;
+                        }
+                        chosen_item.removeClass('form_js_select_drop_down_item_chosen');
+                        chosen_item = active_list.eq(chosen_item_index);
+                        chosen_item.addClass('form_js_select_drop_down_item_chosen');
+                        js_select_drop_down.scrollTop(chosen_item_index*chosen_item.outerHeight());
                     }
+                    break;
+                case 13:
+                    // Key Enter Pressed
+                    event.preventDefault();
+
+                    if (active_list_length <= 1)
+                    {
+                        bln_hasMatch = 0;
+                    }
+                    chosen_item.addClass('form_js_select_drop_down_item_selected');
+                    chosen_item_index = 0;
                     chosen_item.removeClass('form_js_select_drop_down_item_chosen');
+                    active_list = js_select_drop_down.find('.form_js_select_drop_down_item:not(.form_js_select_drop_down_item_hidden):not(.form_js_select_drop_down_item_selected)');
                     chosen_item = active_list.eq(chosen_item_index);
                     chosen_item.addClass('form_js_select_drop_down_item_chosen');
-                    js_select_drop_down.scrollTop(chosen_item_index*chosen_item.outerHeight());
-                }
-                break;
-            case 40:
-                // Key Arrow Down Pressed
-                event.preventDefault();
-                if (chosen_item.length == 1)
-                {
-                    if (chosen_item_index >= active_list_length-1)
-                    {
-                        chosen_item_index = active_list_length-1;
-                    }
-                    else
-                    {
-                        chosen_item_index++;
-                    }
-                    chosen_item.removeClass('form_js_select_drop_down_item_chosen');
-                    chosen_item = active_list.eq(chosen_item_index);
-                    chosen_item.addClass('form_js_select_drop_down_item_chosen');
-                    js_select_drop_down.scrollTop(chosen_item_index*chosen_item.outerHeight());
-                }
-                break;
-            case 13:
-                // Key Enter Pressed
-                event.preventDefault();
 
-                if (active_list_length <= 1)
-                {
-                    bln_hasMatch = 0;
-                }
-                chosen_item.addClass('form_js_select_drop_down_item_selected');
-                chosen_item_index = 0;
-                chosen_item.removeClass('form_js_select_drop_down_item_chosen');
-                active_list = js_select_drop_down.find('.form_js_select_drop_down_item:not(.form_js_select_drop_down_item_hidden):not(.form_js_select_drop_down_item_selected)');
-                chosen_item = active_list.eq(chosen_item_index);
-                chosen_item.addClass('form_js_select_drop_down_item_chosen');
-
-                $.fn.form_js_selector.add(chosen_item);
-                break;    
+                    $.fn.form_js_selector.add(chosen_item);
+                    break;
             }
         });
 
@@ -1144,6 +1148,7 @@ $.fn.form_js_selector = function(user_option){
         js_select_container.trigger('reset');
     });
 };
+
 
 // Textarea Counter
 $.fn.form_textarea_counter = function(user_option){
@@ -1356,7 +1361,7 @@ $.fn.gallery_popup = function(user_option){
                     });
 
 
-                    
+
                     //overlay_container.append('<img src="'+current_image.src+'" />').removeClass('overlay_container_loading');
 
                 };
@@ -1431,7 +1436,7 @@ $.fn.gallery_popup = function(user_option){
                             'marginTop':''
                         }).remove();
                     });
-                    
+
                     $(window).unbind('keydown');
                 });
 
@@ -1843,7 +1848,7 @@ $.fn.touch_slider = function(user_option){
 function FrameOnload(){
     $('.off_canvas_trigger').click(function(event){
         event.preventDefault();
-        
+
         var off_canvas_wrapper = $(this).closest('.off_canvas_wrapper');
         if (off_canvas_wrapper.hasClass('off_canvas_expand'))
         {
@@ -1865,7 +1870,7 @@ function FrameOnload(){
     });
     $('.off_canvas_halt').click(function(event){
         event.preventDefault();
-        
+
         $('.off_canvas_wrapper').removeClass('off_canvas_expand off_canvas_expand_left off_canvas_expand_right');
     });
 

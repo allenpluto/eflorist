@@ -1231,6 +1231,13 @@ class content extends base {
 
                         break;
                     case 'mail':
+                        if (!validate_recaptcha($this->request['option']['g-recaptcha-response'],$error))
+                        {
+                            $this->result['content']['status'] = 'Fail';
+                            $this->result['content']['message'] = 'Verification Failed '.json_encode($error);
+                            break;
+                        }
+
                         $this->content['format'] = 'json';
                         $email_option = array(
                             'to'=>'flower@efloristwagga.com.au',
@@ -1238,6 +1245,8 @@ class content extends base {
                             'subject'=>'Testing Email',
                             'message'=>'Testing Email Content'
                         );
+
+                        $error = '';
 
                         switch($this->request['method'])
                         {
@@ -1262,7 +1271,7 @@ class content extends base {
                         }
 
                         $email_result = mail($email_option['to'],$email_option['subject'],$email_option['message'],$email_option['headers']);
-                        if (empty($email_result))
+                        if (!empty($email_result))
                         {
                             $this->result['content']['status'] = 'OK';
                             $this->result['content']['message'] = 'Email Sent';
@@ -1645,7 +1654,7 @@ class content extends base {
 
                                         if (in_array($this->request['document'],$email_page))
                                         {
-                                            $this->content['script']['ajax_form'] = array('content'=>'$(document).ready(function() {var form = $(\'.ajax_form_container\');var ajax_form_info = form.find(\'.ajax_form_info\');var post_value = {\'client_name\': $(\'input[name="client_name"]\').val(),\'client_email\': $(\'input[name="client_email"]\').val(),\'client_telephone\': $(\'input[name="client_telephone"]\').val(),\'client_message\': $(\'textarea[name="client_message"]\').val()};$.ajax({\'type\': \'POST\',\'url\': \''.URI_SITE_BASE.'mail/'.$this->request['document'].'\',\'data\': post_value,\'dataType\': \'json\',\'beforeSend\': function(ajax_obj, option_obj) {form.addClass(\'ajax_form_container_loading\');},\'timeout\': 12000}).always(function(callback_obj, status, info_obj) {form.removeClass(\'ajax_form_container_loading\');if (status == \'success\') {var data = callback_obj;var xhr = info_obj;console.log(callback_obj);if (callback_obj.status == \'OK\') {var update_data = callback_obj.form_data;ajax_form_info.addClass(\'ajax_form_info_success\').html(\'Email Sent\');setTimeout(function(){form.removeClass(\'ajax_form_container_display_info\');ajax_form_info.delay(500).removeClass(\'ajax_form_info_success\').html(\'\');},3000);}else{ajax_form_info.addClass(\'ajax_form_info_error\').html(\'Failed to send email\');setTimeout(function(){form.removeClass(\'ajax_form_container_display_info\');ajax_form_info.delay(500).removeClass(\'ajax_form_info_error\').html(\'\');},3000);}} else {var xhr = callback_obj;var error = info_obj;ajax_form_info.addClass(\'ajax_form_info_error\').html(\'Failed to send email, Error [\' + status + \'], Try again later<br>\' + callback_obj.responseText);setTimeout(function(){form.removeClass(\'ajax_form_container_display_info\');ajax_form_info.delay(500).removeClass(\'ajax_form_info_error\').html(\'\');},10000);}});});');
+                                            $this->content['script']['ajax_form'] = array('content'=>'$(document).ready(function() {$(\'.ajax_form_container\').ajax_form({\'action\':\'email\',\'ajax_post\':{\'url\':\''.URI_SITE_BASE.'mail/'.$this->request['document'].'\'}});$(\'#form_inquiry_submit\').click(function(event){event.preventDefault();$(this).closest(\'.ajax_form_container\').trigger(\'post_form_data\');});$(\'.ajax_form_container\').on(\'set_update_data\',function(event, update_data){event.preventDefault();$(this).html(\'<p style="font-weight: bold;">Thank you for your inquiry.  We will get back to you as soon as possible, normally within 12 hours.<br>For urgent matters, please call (02) 6931 4562 anytime.</p>\');});});');
                                         }
                                     }
                                     else

@@ -18,8 +18,11 @@
                 <label for="form_inquiry_client_message">Message</label>
                 <textarea id="form_inquiry_client_message" name="client_message" placeholder="Message">[[*client_message]]</textarea>
             </div>
+            <div class="form_row_container form_row_container_mandatory">
+                <div id="form_inquiry_recaptcha" class="g-recaptcha" data-sitekey="6LdJNS8UAAAAAJJMsqWWT5CW23qAvvnSQf1v7mU2"></div>
+            </div>
             <div class="form_row_container form_row_button_container">
-                <a href="javascript:void(0)" class="general_style_input_button general_style_input_button_gray">Submit</a>
+                <a id="form_inquiry_submit" href="javascript:void(0)" class="general_style_input_button general_style_input_button_gray">Submit</a>
             </div>
             <div class="ajax_form_mask"><div class="ajax_form_mask_loading_icon"></div><div class="ajax_form_info"></div></div>
         </form>
