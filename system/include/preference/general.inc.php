@@ -14,6 +14,7 @@ $global_preference->view_product_page_size = 100;
 
 // Data Encode, options: base64, none
 $global_preference->data_encode = 'none';
+$global_preference->post_datauri = true;
 
 // Minify Text files, (remove unnecessary spaces, long variable name...)
 $global_preference->minify_html = false;

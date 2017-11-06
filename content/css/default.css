@@ -2039,6 +2039,12 @@ img {display:block;max-width:100%;}
     display: inline-block;
 }
 
+#form_inquiry_respond_message
+{
+    font-size: 1.4em;
+    font-weight: bold;
+}
+
 /*# Body/Product/Category #*/
 .category_container
 {

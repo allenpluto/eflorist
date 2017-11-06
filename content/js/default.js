@@ -138,6 +138,7 @@ $.fn.ajax_loader = function(user_option) {
 $.fn.ajax_form = function(user_option) {
     var default_option = {
         'action': 'update',
+        'post_datauri': true,
         'ajax_post':{
             'type': 'POST',
             'url': window.location.pathname,
@@ -147,6 +148,23 @@ $.fn.ajax_form = function(user_option) {
     };
     // Extend our default option with user provided.
     var option = $.extend(true,default_option, user_option);
+
+    function dataURItoBlob(dataURI) {
+        var byteString = atob(dataURI.split(',')[1]);
+
+        // separate out the mime component
+        var mimeString = dataURI.split(',')[0].split(':')[1].split(';')[0];
+
+        // write the bytes of the string to an ArrayBuffer
+        var ab = new ArrayBuffer(byteString.length);
+        var ia = new Uint8Array(ab);
+        for (var i = 0; i < byteString.length; i++) {
+            ia[i] = byteString.charCodeAt(i);
+        }
+
+        //New Code
+        return new Blob([ab], {type: mimeString});
+    }
 
     return this.each(function() {
         var form = $(this);
@@ -248,26 +266,62 @@ $.fn.ajax_form = function(user_option) {
                 return true;
             }
 
-            var post_value = {
-                'id':form.data('form_data').id,
-                'form_data':update_data,
-                'file_type':'json',
-                'action':form.data('action')
-            };
-            if (form.data('form_data').id)
-            {
-                post_value['id'] = form.data('form_data').id;
-            }
-            $.ajax({
+            var ajax_option = {
                 'type': option['ajax_post']['type'],
                 'url': option['ajax_post']['url'],
-                'data': post_value,
                 'dataType': option['ajax_post']['dataType'],
                 'beforeSend': function (ajax_obj,option_obj) {
                     form.addClass('ajax_form_container_loading');
                 },
                 'timeout': option['ajax_post']['timeout']
-            }).always(function (callback_obj, status, info_obj) {
+            };
+
+            if (option['post_datauri'])
+            {
+                var post_value = {
+                    'form_data':update_data,
+                    'file_type':'json',
+                    'action':form.data('action')
+                };
+                if (form.data('form_data').id)
+                {
+                    post_value['id'] = form.data('form_data').id;
+                }
+                ajax_option['data'] = post_value;
+            }
+            else
+            {
+                var form_data = new FormData();
+                for (var prop in update_data) {
+                    // skip loop if the property is from prototype
+                    if(!update_data.hasOwnProperty(prop)) continue;
+
+                    if (update_data[prop].match(/^data:image/i))
+                    {
+                        var blob = dataURItoBlob(update_data[prop]);
+                        form_data.append(prop, blob);
+                        delete form_data[prop];
+                    }
+                    else
+                    {
+                        form_data.append('_form_data_'+prop, update_data[prop]);
+                    }
+                }
+
+                form_data.append('file_type','json');
+                form_data.append('action',form.data('action'));
+
+                if (form.data('form_data').id)
+                {
+                    form_data.append('id',form.data('form_data').id);
+                }
+                ajax_option['processData'] = false;
+                ajax_option['contentType'] = false;
+                ajax_option['data'] = form_data;
+            }
+
+
+            $.ajax(ajax_option).always(function (callback_obj, status, info_obj) {
                 console.log('Post Complete');
                 console.log(status);
                 form.removeClass('ajax_form_container_loading');
@@ -278,16 +332,19 @@ $.fn.ajax_form = function(user_option) {
                     if (callback_obj.status == 'OK')
                     {
                         var update_data = callback_obj.form_data;
-                        console.log(update_data);
-                        form.trigger('set_update_data',[update_data]);
-                        form.trigger('display_message',['Update Succeeded','success']);
+                        if (update_data)
+                        {
+                            console.log(update_data);
+                            form.trigger('set_update_data',[update_data]);
+                        }
+                        form.trigger('display_message',['Form Submitted','success']);
                     }
                 }
                 else {
                     var xhr = callback_obj;
                     var error = info_obj;
 
-                    form.trigger('display_message',['Add/Update Failed, Error ['+status+'], Try again later<br>'+callback_obj.responseText,'error',10000]);
+                    form.trigger('display_message',['Form Submit Failed, ['+status+'], Try again later<br>'+callback_obj.responseText,'error',10000]);
                 }
             });
         });

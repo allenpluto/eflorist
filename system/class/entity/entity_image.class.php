@@ -35,6 +35,15 @@ class entity_image extends entity
             {
                 if (isset($record['source_file']))
                 {
+                    if (preg_match('/^data:/',$record['source_file']))
+                    {
+                        $file_content = explode(',',$record['source_file']);
+                        $file_content = end($file_content);
+                        $file_name = sha1(rand()).'.jpg';
+
+                        file_put_contents(PATH_ASSET.'temp'.DIRECTORY_SEPARATOR.$file_name,base64_decode($file_content));
+                        $record['source_file'] = PATH_ASSET.'temp/'.$file_name;
+                    }
                     $image_size = @getimagesize($record['source_file']);
                     if ($image_size !== false)
                     {
@@ -93,8 +102,9 @@ class entity_image extends entity
                         $this->message->warning = __FILE__ . '(line ' . __LINE__ . '): '.$parameter['table'].' failed to get image size for '.$record['source_file'];
                     }
                     unset($image_size);
-                    if (preg_match('/^data:/',$record['source_file']))
+                    if (isset($file_name))
                     {
+                        @unlink($record['source_file']);
                         $record['source_file'] = '';
                     }
                 }

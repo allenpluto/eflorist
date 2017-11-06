@@ -523,13 +523,14 @@ $row = [
 //    ['name'=>'G287','source_file'=>'C:\temp\galleries\61\wagga-florist-002.jpg'],
 //    ['name'=>'G284','source_file'=>'C:\temp\galleries\61\wagga-florist-006b.JPG'],
 //    ['name'=>'G286','source_file'=>'C:\temp\galleries\61\wagga-florist-004.jpg']
-    ['id'=>238,'name'=>'M283','source_file'=>'C:\temp\galleries\59\wagga-florist-008c.JPG'],
-    ['id'=>237,'name'=>'M546','source_file'=>'C:\temp\galleries\59\1wagga-florist_003.JPG'],
-    ['id'=>230,'name'=>'M360','source_file'=>'C:\temp\galleries\59\wagga-florist-045b.JPG'],
-    ['id'=>224,'name'=>'M534','source_file'=>'C:\temp\galleries\59\wagga-florist-091.JPG'],
-    ['id'=>222,'name'=>'M477','source_file'=>'C:\temp\galleries\59\wagga-florist_013.JPG'],
-    ['id'=>216,'name'=>'M312','source_file'=>'C:\temp\galleries\59\wagga-florist-030.JPG'],
-    ['id'=>213,'name'=>'M467','source_file'=>'C:\temp\galleries\59\wagga-florist_007.JPG']
+//    ['id'=>238,'name'=>'M283','source_file'=>'C:\temp\galleries\59\wagga-florist-008c.JPG'],
+//    ['id'=>237,'name'=>'M546','source_file'=>'C:\temp\galleries\59\1wagga-florist_003.JPG'],
+//    ['id'=>230,'name'=>'M360','source_file'=>'C:\temp\galleries\59\wagga-florist-045b.JPG'],
+//    ['id'=>224,'name'=>'M534','source_file'=>'C:\temp\galleries\59\wagga-florist-091.JPG'],
+//    ['id'=>222,'name'=>'M477','source_file'=>'C:\temp\galleries\59\wagga-florist_013.JPG'],
+//    ['id'=>216,'name'=>'M312','source_file'=>'C:\temp\galleries\59\wagga-florist-030.JPG'],
+//    ['id'=>213,'name'=>'M467','source_file'=>'C:\temp\galleries\59\wagga-florist_007.JPG']
+    ['name'=>'Test Image','source_file'=>'C:\wamp\tmp\php2316.tmp']
 ];
 $entity_image = new entity_image();
 $entity_image->set(['row'=>$row]);

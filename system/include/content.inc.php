@@ -115,6 +115,28 @@ class content extends base {
         unset($option_preset);
         unset($option);
 
+        if (!isset($this->request['option']['form_data']))
+        {
+            $this->request['option']['form_data'] = [];
+        }
+
+        foreach ($this->request['option'] as $option_index=>$option_item)
+        {
+            if (preg_match('/^_form_data_/',$option_index))
+            {
+                $this->request['option']['form_data'][preg_replace('/^_form_data_/','',$option_index)] = $option_item;
+                unset($this->request['option'][$option_index]);
+            }
+        }
+
+        if (!empty($_FILES))
+        {
+            foreach($_FILES as $file_field_name=>$file_field)
+            {
+                $this->request['option']['form_data'][$file_field_name] = $file_field['tmp_name'];
+            }
+        }
+
         $request_uri = trim(preg_replace('/^[\/]?'.FOLDER_SITE_BASE.'[\/]/','',$value),'/');
         $request_path = explode('/',$request_uri);
 
@@ -403,6 +425,7 @@ class content extends base {
                 $this->result['header']['Location'] =  $this->request['file_uri'].(!empty($this->request['option'])?('?'.http_build_query($this->request['option'])):'');
             }
         }
+//        print_r($this->request['option']);exit;
     }
 
     private function build_content()
@@ -1099,7 +1122,7 @@ class content extends base {
                                                         $this->content['form_data']['image_id'] = 0;
                                                         unset($image_obj);
                                                     }
-                                                    elseif (preg_match('/^data:/', $this->content['form_data']['image_uri']))
+                                                    else//if (preg_match('/^data:/', $this->content['form_data']['image_uri']))
                                                     {
                                                         $image_obj = new entity_image($entity_product_data['image_id']);
                                                         $image_obj->delete();
@@ -1231,7 +1254,7 @@ class content extends base {
 
                         break;
                     case 'mail':
-                        if (!validate_recaptcha($this->request['option']['g-recaptcha-response'],$error))
+                        if (!validate_recaptcha($this->request['option']['form_data']['g-recaptcha-response'],$error))
                         {
                             $this->result['content']['status'] = 'Fail';
                             $this->result['content']['message'] = 'Verification Failed '.json_encode($error);
@@ -1252,16 +1275,16 @@ class content extends base {
                         {
                             case 'inquiry':
                                 $email_option['subject'] = 'Inquiry';
-                                $email_option['headers'] .= 'Reply-To: '.$this->request['option']['client_name'].'<'.$this->request['option']['client_email'].'>'.PHP_EOL;
+                                $email_option['headers'] .= 'Reply-To: '.$this->request['option']['form_data']['client_name'].'<'.$this->request['option']['form_data']['client_email'].'>'.PHP_EOL;
                                 $email_option['message'] = '<table>';
-                                $email_option['message'] .= '<tr><td>Name</td><td>'.$this->request['option']['client_name'].'</td></tr>';
-                                $email_option['message'] .= '<tr><td>Email</td><td>'.$this->request['option']['client_email'].'</td></tr>';
-                                if (!empty($this->request['option']['client_telephone']))
+                                $email_option['message'] .= '<tr><td>Name</td><td>'.$this->request['option']['form_data']['client_name'].'</td></tr>';
+                                $email_option['message'] .= '<tr><td>Email</td><td>'.$this->request['option']['form_data']['client_email'].'</td></tr>';
+                                if (!empty($this->request['option']['form_data']['client_telephone']))
                                 {
-                                    $email_option['message'] .= '<tr><td>Tel</td><td>'.$this->request['option']['client_telephone'].'</td></tr>';
+                                    $email_option['message'] .= '<tr><td>Tel</td><td>'.$this->request['option']['form_data']['client_telephone'].'</td></tr>';
                                 }
                                 $email_option['message'] .= '<tr><td colspan="2">Message</td></tr>';
-                                $email_option['message'] .= '<tr><td colspan="2">'.$this->request['option']['client_message'].'</td></tr>';
+                                $email_option['message'] .= '<tr><td colspan="2">'.$this->request['option']['form_data']['client_message'].'</td></tr>';
                                 $email_option['message'] .= '</table>';
                                 break;
                             case 'order':
@@ -1275,6 +1298,7 @@ class content extends base {
                         {
                             $this->result['content']['status'] = 'OK';
                             $this->result['content']['message'] = 'Email Sent';
+                            $this->result['content']['form_data'] = $this->request['option']['form_data'];
                         }
                         else
                         {
@@ -1654,7 +1678,7 @@ class content extends base {
 
                                         if (in_array($this->request['document'],$email_page))
                                         {
-                                            $this->content['script']['ajax_form'] = array('content'=>'$(document).ready(function() {$(\'.ajax_form_container\').ajax_form({\'action\':\'email\',\'ajax_post\':{\'url\':\''.URI_SITE_BASE.'mail/'.$this->request['document'].'\'}});$(\'#form_inquiry_submit\').click(function(event){event.preventDefault();$(this).closest(\'.ajax_form_container\').trigger(\'post_form_data\');});$(\'.ajax_form_container\').on(\'set_update_data\',function(event, update_data){event.preventDefault();$(this).html(\'<p style="font-weight: bold;">Thank you for your inquiry.  We will get back to you as soon as possible, normally within 12 hours.<br>For urgent matters, please call (02) 6931 4562 anytime.</p>\');});});');
+                                            $this->content['script']['ajax_form'] = array('content'=>'$(document).ready(function() {$(\'.ajax_form_container\').ajax_form({\'action\':\'email\',\'ajax_post\':{\'url\':\''.URI_SITE_BASE.'mail/'.$this->request['document'].'\'}});$(\'#form_inquiry_submit\').click(function(event){event.preventDefault();$(this).closest(\'.ajax_form_container\').trigger(\'post_form_data\');});$(\'.ajax_form_container\').on(\'set_update_data\',function(event, update_data){event.preventDefault();$(this).html(\'<p id="form_inquiry_respond_message">Thank you for your inquiry.  We will get back to you as soon as possible, normally within 12 hours.<br><br>For urgent matters, please call (02) 6931 4562 anytime.</p>\');});});');
                                         }
                                     }
                                     else
