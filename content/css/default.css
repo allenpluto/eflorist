@@ -2212,6 +2212,11 @@ img {display:block;max-width:100%;}
     text-align: right;
 }
 
+.product_price:before
+{
+    content: '$ ';
+}
+
 .product_description
 {
     font-size: 0.8em;

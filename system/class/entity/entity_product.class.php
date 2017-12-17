@@ -18,6 +18,7 @@ class entity_product extends entity
             'update_time' => 'tbl_entity_product.update_time',
             'price' => 'tbl_entity_product.price',
             'category_id' => 'tbl_entity_category.id',
+            'display_order' => 'tbl_entity_product.display_order',
             'active' => 'tbl_entity_product.active'
         );
 

@@ -30,6 +30,14 @@
                     <div class="form_select_display_container"></div>
                 </div>
             </div>
+            <div class="form_row_container">
+                <label for="form_manager_product_display_order">Display Order</label>
+                <input id="form_manager_product_display_order" name="display_order" type="number" placeholder="Display Order" value="[[*display_order]]">
+            </div>
+            <div class="form_row_container">
+                <label for="form_manager_product_active">Active</label>
+                <input id="form_manager_product_active" name="active" type="number" placeholder="Active" value="[[*active]]" min="0" max="1">
+            </div>
             <div class="form_bottom_row_container"></div>
             <div class="footer_action_wrapper"><!--
             --><a href="[[*base]]manager/product/list_product?category_id=[[*category_id]]" class="footer_action_button footer_action_button_back">Back</a><!--

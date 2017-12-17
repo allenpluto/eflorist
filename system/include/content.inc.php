@@ -385,6 +385,11 @@ class content extends base {
                 {
                     $this->request['file_path'] .= $this->request['category'].DIRECTORY_SEPARATOR;
                     $this->request['file_uri'] .= $this->request['category'];
+                    if (!empty($this->request['product']))
+                    {
+                        $this->request['file_path'] .= $this->request['product'].DIRECTORY_SEPARATOR;
+                        $this->request['file_uri'] .= '/'.$this->request['product'];
+                    }
                 }
 
                 if (!empty($this->request['document']))
@@ -1006,7 +1011,7 @@ class content extends base {
                                                         $this->content['form_data']['image_id'] = 0;
                                                         unset($image_obj);
                                                     }
-                                                    elseif (preg_match('/^data:/', $this->content['form_data']['image_uri']))
+                                                    else//if (preg_match('/^data:/', $this->content['form_data']['image_uri']))
                                                     {
                                                         $image_obj = new entity_image($entity_category_data['image_id']);
                                                         $image_obj->delete();
@@ -1241,12 +1246,32 @@ class content extends base {
                                         break;
                                     }
                                     $index_product_obj = new index_product();
-                                    $index_product_obj->filter_by_category(array('category_id'=>$view_category_obj->id_group,'where'=>array('`active` = 1')));
+                                    $index_product_obj->filter_by_category(array('category_id'=>$view_category_obj->id_group,'where'=>array('`active` = 1'),'order'=>array('display_order ASC')));
 
                                     $page_fetched_value = $view_category_obj->fetch_value(array('page_size'=>1));
 
                                     $this->content['field'] = array_merge($this->content['field'],end($page_fetched_value));
                                     $this->content['field']['product'] = array_values($index_product_obj->id_group);
+
+                                    if (!empty($this->request['product']))
+                                    {
+                                        $view_product_obj = new view_product($this->request['product']);
+                                        if (empty($view_product_obj->id_group))
+                                        {
+                                            // If there is category doesn't exist, redirect to product index
+                                            $this->result['status'] = 301;
+                                            $this->result['header']['Location'] =  URI_SITE_BASE.$this->request['module'].'/'.$this->request['category'].'/';
+                                            break;
+                                        }
+                                        if (!in_array(end($view_product_obj->id_group),$index_product_obj->id_group))
+                                        {
+                                            // If there is category doesn't exist, redirect to product index
+                                            $this->result['status'] = 301;
+                                            $this->result['header']['Location'] =  URI_SITE_BASE.$this->request['module'].'/'.$this->request['category'].'/';
+                                            break;
+                                        }
+                                        $this->content['script']['logo_uploader'] = array('content'=>'$(document).ready(function(){$(\'.product_wrapper\').form_image_uploader('.$image_uploader_data_string.');});');
+                                    }
                                 }
 
 
@@ -1357,7 +1382,7 @@ class content extends base {
                                                         $this->content['form_data']['image_id'] = 0;
                                                         unset($image_obj);
                                                     }
-                                                    elseif (preg_match('/^data:/', $this->content['form_data']['image_uri']))
+                                                    else//if (preg_match('/^data:/', $this->content['form_data']['image_uri']))
                                                     {
                                                         $image_obj = new entity_image($entity_web_page_data['image_id']);
                                                         $image_obj->delete();

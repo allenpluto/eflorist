@@ -343,7 +343,7 @@ function render_html($field = array())
                             {
                                 if (empty($match_result_value['parameter']['empty_template']) AND empty($match_result_value['parameter']['empty_template_name']))
                                 {
-                                    $match_result_value['value'] = '';
+                                    $match_result_value['value'] = $field_row[$match_result_value['name']];
                                     break;
                                 }
                                 else
