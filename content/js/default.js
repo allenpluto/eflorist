@@ -1748,6 +1748,7 @@ $.fn.touch_slider = function(user_option){
 
             slider_container.on('set_current',function(event,new_count_current) {
                 var slider_container = $(this);
+                slider_container.addClass('touch_slider_container_active');
 
                 if (new_count_current > slider_container.data('count_total'))
                 {
@@ -1937,7 +1938,7 @@ function FrameOnload(){
         'focus_current':1
     });
 
-    $('.touch_slider_container').touch_slider();
+    //$('.touch_slider_container').touch_slider();
 
     if ($('#home_slider_image_container').find('.slider_image').length > 0)
     {
@@ -1969,10 +1970,10 @@ function FrameOnload(){
         $(this).closest('.touch_slider_container').trigger('set_current',[$(this).closest('.product_wrapper').find('.product_container').index($(this))]);
     });
 
-    if ($('.touch_slider_item').length > 0 && $('.touch_slider_item_active').length == 0)
-    {
-        $('.touch_slider_container').trigger('set_current',[1]);
-    }
+    //if ($('.touch_slider_item').length > 0 && $('.touch_slider_item_active').length == 0)
+    //{
+    //    $('.touch_slider_container').trigger('set_current',[1]);
+    //}
 
     $('.product_wrapper').on('set_current',function(event,new_count_current) {
         //TODO: change uri on active product change

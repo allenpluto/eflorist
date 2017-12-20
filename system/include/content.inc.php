@@ -1253,6 +1253,14 @@ class content extends base {
                                     $this->content['field'] = array_merge($this->content['field'],end($page_fetched_value));
                                     $this->content['field']['product'] = array_values($index_product_obj->id_group);
 
+                                    // TODO: Retrieve and store product data in jQuery object for loading product detail in js (without reload page)
+//                                    $view_category_product_obj = new view_product($index_product_obj->id_group);
+//                                    $category_product_rows = $view_category_product_obj->fetch_value();
+//                                    print_r($category_product_rows);exit;
+//
+//                                    $this->content['script']['logo_uploader'] = array('content'=>'$(document).ready(function(){$(\'.product_wrapper\').data('.json_encode($category_product_rows).');});');
+                                    $this->content['field']['category_uri'] = URI_SITE_BASE.$this->request['module'].'/'.$this->request['category'].'/';
+
                                     if (!empty($this->request['product']))
                                     {
                                         $view_product_obj = new view_product($this->request['product']);
@@ -1270,7 +1278,13 @@ class content extends base {
                                             $this->result['header']['Location'] =  URI_SITE_BASE.$this->request['module'].'/'.$this->request['category'].'/';
                                             break;
                                         }
-                                        $this->content['script']['logo_uploader'] = array('content'=>'$(document).ready(function(){$(\'.product_wrapper\').form_image_uploader('.$image_uploader_data_string.');});');
+
+                                        $page_fetched_value = $view_product_obj->fetch_value(array('page_size'=>1));
+                                        $page_fetched_value = end($page_fetched_value);
+                                        $page_fetched_value['name'] = $this->content['field']['name'].' - '.$page_fetched_value['name'];
+                                        $this->content['field'] = array_merge($this->content['field'],$page_fetched_value);
+                                        $this->content['field']['product_detail'] = array_values($view_product_obj->id_group);
+                                        $this->content['script']['set_product_detail'] = array('content'=>'$(document).ready(function(){$(\'.product_wrapper\').addClass(\'product_wrapper_active\');$(\'#product_container_'.end($view_product_obj->id_group).'\').addClass(\'product_container_active\');});');
                                     }
                                 }
 
