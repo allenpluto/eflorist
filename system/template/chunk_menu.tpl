@@ -1,27 +1,29 @@
 <div class="off_canvas_menu off_canvas_menu_left">
     <div id="off_canvas_trigger_menu" class="off_canvas_trigger off_canvas_trigger_left"></div>
-    <div class="off_canvas_menu_section">
-        <div class="off_canvas_menu_title">
-            <h1>Southcity Florist</h1>
+    <div class="off_canvas_menu_section_container container">
+        <div class="off_canvas_menu_section">
+            <div class="off_canvas_menu_title">
+                <h1>Southcity Florist</h1>
+            </div>
         </div>
-    </div>
-    <div class="off_canvas_menu_section">
-        <div class="off_canvas_menu_item">
-            <a href=""><span>Home</span></a>
-        </div>
-        <div class="off_canvas_menu_item">
-            <a href="news-promotion">News & Promotion</a>
-        </div>
-        <div class="off_canvas_menu_item">
-            <a href="make-payment"><span>Make Payment</span></a>
-        </div>
-        <div class="off_canvas_menu_item">
-            <a href="inquiry"><span>Inquiry</span></a>
-        </div>
-    </div><!-- #off_canvas_menu_section_main_menu -->
-    <div id="" class="off_canvas_menu_section">
-        <div class="off_canvas_menu_item">
-            <a href="product/"><span>Product</span></a>
+        <div class="off_canvas_menu_section">
+            <div class="off_canvas_menu_item">
+                <a href=""><span>Home</span></a>
+            </div>
+            <div class="off_canvas_menu_item">
+                <a href="news-promotion">News & Promotion</a>
+            </div>
+            <div class="off_canvas_menu_item">
+                <a href="make-payment"><span>Make Payment</span></a>
+            </div>
+            <div class="off_canvas_menu_item">
+                <a href="inquiry"><span>Inquiry</span></a>
+            </div>
+        </div><!-- #off_canvas_menu_section_main_menu -->
+        <div id="" class="off_canvas_menu_section">
+            <div class="off_canvas_menu_item">
+                <a href="product/"><span>Product</span></a>
+            </div>
         </div>
     </div>
 </div><!-- #off_canvas_menu -->

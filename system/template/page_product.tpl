@@ -8,10 +8,10 @@
         [[$chunk_menu]]
         [[$chunk_header]]
         <div class="wrapper body_wrapper">
-            <div class="container body_container">
+            <div class="container body_container product_body_container">
                 <div class="product_detail_title"><h1>[[*name]]</h1></div>
                 [[product_detail:object=`view_product`:template_name=`view_product_detail`]]
-                <div class="product_detail_content">
+                <div class="product_list_container">
                     <div class="product_wrapper touch_slider_container"><!--
                     [[product]]
                 --></div>
